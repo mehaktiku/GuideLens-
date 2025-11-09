@@ -1,0 +1,177 @@
+[
+  {
+    "Name": "Skyline Chili",
+    "Category": "Food",
+    "Neighborhood": "Downtown",
+    "TheBestOffer": "The 3-Way (spaghetti, chili, cheese).",
+    "NoteTip": "Add hot sauce; try the cheese first."
+  },
+  {
+    "Name": "Graeter's",
+    "Category": "Food",
+    "Neighborhood": "Fountain Square",
+    "TheBestOffer": "Black Raspberry Chocolate Chip",
+    "NoteTip": "Get a fresh waffle cone."
+  },
+  {
+    "Name": "Slickers",
+    "Category": "Food",
+    "Neighborhood": "Mount Adams",
+    "TheBestOffer": "Weekend brunch special",
+    "NoteTip": "Try outdoor seating."
+  },
+  {
+    "Name": "Eden Park",
+    "Category": "Fall Photos",
+    "Neighborhood": "Over-the-Rhine",
+    "TheBestOffer": "View from the promenade",
+    "NoteTip": "Arrive 30 mins before sunset."
+  },
+  {
+    "Name": "Ault Park",
+    "Category": "Fall Photos",
+    "Neighborhood": "Mount Lookout",
+    "TheBestOffer": "Pavilion fountain shot",
+    "NoteTip": "Best in autumn colors."
+  },
+  {
+    "Name": "Mount Adams Overlook",
+    "Category": "Fall Photos",
+    "Neighborhood": "Mount Adams",
+    "TheBestOffer": "Sunset with skyline",
+    "NoteTip": "Bring a tripod."
+  },
+  {
+    "Name": "Cincinnati Art Museum",
+    "Category": "Museums",
+    "Neighborhood": "Avondale",
+    "TheBestOffer": "Rookwood Pottery collection",
+    "NoteTip": "Free admission for some days."
+  },
+  {
+    "Name": "Contemporary Arts Center",
+    "Category": "Museums",
+    "Neighborhood": "Downtown",
+    "TheBestOffer": "Rotating contemporary exhibits",
+    "NoteTip": "Check hours before visiting."
+  },
+  {
+    "Name": "National Underground Railroad Freedom Center",
+    "Category": "Museums",
+    "Neighborhood": "Riverfront",
+    "TheBestOffer": "Permanent exhibits",
+    "NoteTip": "Plan 2-3 hours."
+  },
+  {
+    "Name": "Smale Riverfront Park",
+    "Category": "Fall Photos",
+    "Neighborhood": "Riverfront",
+    "TheBestOffer": "Fountain + river skyline",
+    "NoteTip": "Good for family photos."
+  },
+  {
+    "Name": "Findlay Market",
+    "Category": "Food",
+    "Neighborhood": "Over-the-Rhine",
+    "TheBestOffer": "Local produce & chili spots",
+    "NoteTip": "Weekends are busy."
+  },
+  {
+    "Name": "Jungle Jim's International Market",
+    "Category": "Food",
+    "Neighborhood": "Fairfield",
+    "TheBestOffer": "International aisles & samples",
+    "NoteTip": "Wear comfy shoes."
+  },
+  {
+    "Name": "Washington Park",
+    "Category": "Fall Photos",
+    "Neighborhood": "Over-the-Rhine",
+    "TheBestOffer": "Pavilion and green spaces",
+    "NoteTip": "Often has live music."
+  },
+  {
+    "Name": "Cincinnati Museum Center",
+    "Category": "Museums",
+    "Neighborhood": "Union Terminal",
+    "TheBestOffer": "Natural history and special exhibits",
+    "NoteTip": "Check the dome schedule."
+  },
+  {
+    "Name": "Coney Island",
+    "Category": "Food",
+    "Neighborhood": "Coney",
+    "TheBestOffer": "Funnel cake & waterpark (seasonal)",
+    "NoteTip": "Seasonal opening; check dates."
+  },
+  {
+    "Name": "Mt. Airy Forest",
+    "Category": "Fall Photos",
+    "Neighborhood": "Mt. Airy",
+    "TheBestOffer": "Woodland trails and overlooks",
+    "NoteTip": "Great for hiking photos."
+  },
+  {
+    "Name": "Taft Museum of Art",
+    "Category": "Museums",
+    "Neighborhood": "Downtown",
+    "TheBestOffer": "European and American paintings",
+    "NoteTip": "Small and intimate galleries."
+  },
+  {
+    "Name": "The Banks (Eateries)",
+    "Category": "Food",
+    "Neighborhood": "Riverfront",
+    "TheBestOffer": "Multiple riverfront restaurants",
+    "NoteTip": "Good for evening plans."
+  },
+  {
+    "Name": "Riverbend Music Center",
+    "Category": "Food",
+    "Neighborhood": "Cincinnati Riverfront",
+    "TheBestOffer": "Concert snacks & local vendors",
+    "NoteTip": "Event nights are lively."
+  },
+  {
+    "Name": "Krohn Conservatory",
+    "Category": "Fall Photos",
+    "Neighborhood": "Eden Park",
+    "TheBestOffer": "Seasonal shows (but also gardens)",
+    "NoteTip": "Check for seasonal displays."
+  },
+  {
+    "Name": "Taft's Ale House",
+    "Category": "Food",
+    "Neighborhood": "Over-the-Rhine",
+    "TheBestOffer": "Beer + wood-fired pizza",
+    "NoteTip": "Popular—expect a wait."
+  },
+  {
+    "Name": "Eden Park Overlook",
+    "Category": "Fall Photos",
+    "Neighborhood": "Eden Park",
+    "TheBestOffer": "City & river view",
+    "NoteTip": "Great at golden hour."
+  },
+  {
+    "Name": "Cincinnati Observatory",
+    "Category": "Museums",
+    "Neighborhood": "Mt. Lookout",
+    "TheBestOffer": "Historic telescope and tours",
+    "NoteTip": "Book tour slots early."
+  },
+  {
+    "Name": "Cincinnati Art Galleries (OTR)",
+    "Category": "Museums",
+    "Neighborhood": "Over-the-Rhine",
+    "TheBestOffer": "Local artists and rotating shows",
+    "NoteTip": "Check gallery nights."
+  },
+  {
+    "Name": "Devou Park",
+    "Category": "Fall Photos",
+    "Neighborhood": "Covington",
+    "TheBestOffer": "Panoramic skyline of Cincinnati",
+    "NoteTip": "Cross-state but close drive."
+  }
+]

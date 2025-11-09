@@ -1,20 +1,22 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using GuideLens.Data;
+using GuideLens.Models;
 
 namespace GuideLens.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly IWebHostEnvironment _env;
+        public List<Recommendation> Items { get; set; } = new();
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(IWebHostEnvironment env)
         {
-            _logger = logger;
+            _env = env;
         }
 
         public void OnGet()
         {
-
+            Items = DataLoader.LoadFromContentRoot(_env.ContentRootPath);
         }
     }
 }

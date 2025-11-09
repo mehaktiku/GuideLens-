@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36623.8 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuideLens", "GuideLens.csproj", "{52AA328E-5686-47CA-8017-8AB7B5BACF43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuideLens.Tests", "..\GuideLens.Tests\GuideLens.Tests.csproj", "{9AC44CF2-DCFB-4A5E-ACE2-C12DD226C52B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{52AA328E-5686-47CA-8017-8AB7B5BACF43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52AA328E-5686-47CA-8017-8AB7B5BACF43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52AA328E-5686-47CA-8017-8AB7B5BACF43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AC44CF2-DCFB-4A5E-ACE2-C12DD226C52B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AC44CF2-DCFB-4A5E-ACE2-C12DD226C52B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AC44CF2-DCFB-4A5E-ACE2-C12DD226C52B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AC44CF2-DCFB-4A5E-ACE2-C12DD226C52B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

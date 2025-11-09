@@ -5,6 +5,18 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to GuideLens</h1>
+    <h3>Loaded @Model.Items.Count recommendations</h3>
+
+    <ul style="text-align: left; max-width: 800px; margin: 20px auto;">
+        @foreach (var r in Model.Items.Take(10))
+        {
+            <li><strong>@r.Name</strong> — @r.Category (@r.Neighborhood)</li>
+        }
+    </ul>
+
+    @if (Model.Items.Count > 10)
+    {
+        <p><em>... and @(Model.Items.Count - 10) more</em></p>
+    }
 </div>
