@@ -10,4 +10,6 @@ public class RecommendationQuery
     public string SortBy { get; set; } = "name";
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 12;
+
+    public string City { get; set; } = "Cincinnati";
 }        

@@ -23,3 +23,240 @@ body {
 .card {
     border-radius: 1rem;
 }
+/* --- GuideLens polish --- */
+body {
+    background: #f7fafc;
+}
+
+/* ===== GuideLens Hero ===== */
+.gl-hero {
+    min-height: 42vh;
+    background-image: url('/img/Hero-img.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+    .gl-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,.35));
+    }
+
+.gl-hero-inner {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+}
+
+.gl-hero .display-5 {
+    text-shadow: 0 2px 16px rgba(0,0,0,.25);
+}
+
+@media (max-width: 768px) {
+    .gl-hero {
+        background-attachment: scroll;
+    }
+    /* smoother on mobile */
+}
+
+
+/* Filter block */
+.gl-filter {
+    border-color: rgba(0,0,0,.06) !important;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.04);
+}
+
+.form-label {
+    font-weight: 600;
+}
+
+/* Cards */
+.card {
+    border-radius: 1rem;
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.08) !important;
+    }
+
+.small.text-muted {
+    color: #6b7280 !important;
+}
+
+/* ===== Full-bleed hero ===== */
+.gl-hero-full {
+    min-height: 54vh;
+    width: 100vw;
+    margin-left: calc(50% - 50vw); /* full-bleed trick inside Bootstrap container */
+    margin-right: calc(50% - 50vw);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+}
+
+    .gl-hero-full::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.45));
+    }
+
+.gl-hero-inner {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    padding-top: 4.5rem;
+    padding-bottom: 2rem;
+}
+
+/* Glassy search panel that sits on the hero */
+.gl-search-panel {
+    position: relative;
+    z-index: 2;
+    margin-top: -2.25rem; /* lifts the panel into the hero */
+    border-radius: 1rem;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 .75rem 1.5rem rgba(0,0,0,.12);
+}
+
+/* Option tiles (used on /City) */
+.option-card {
+    height: 220px;
+    border-radius: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    background: #e9eef5;
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+    color: #fff;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.08);
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+
+    .option-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 .75rem 1.25rem rgba(0,0,0,.12);
+    }
+
+    .option-card .bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        filter: brightness(.85);
+    }
+
+    .option-card .fade {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,.0) 40%, rgba(0,0,0,.55) 100%);
+    }
+
+    .option-card h3 {
+        position: relative;
+        z-index: 2;
+        margin: 0;
+        font-weight: 800;
+        letter-spacing: .5px;
+    }
+
+.badge-coming {
+    position: absolute;
+    top: .75rem;
+    right: .75rem;
+    z-index: 3;
+}
+
+@media (max-width: 768px) {
+    .gl-hero-full {
+        background-attachment: scroll;
+    }
+}
+
+/* Full-bleed hero still okay */
+.gl-hero-full {
+    height: min(52vh, 520px);
+}
+
+/* Bigger, bolder option tiles */
+.option-card {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(0,0,0,.10);
+    transition: transform .25s ease, box-shadow .25s ease;
+    min-height: 220px;
+}
+
+.option-card--lg { /* use this on big tiles */
+    min-height: 280px;
+}
+
+@media (min-width: 992px) { /* lg and up */
+    .option-card--lg {
+        min-height: 360px;
+    }
+}
+
+@media (min-width: 1400px) { /* xl+ really fill space */
+    .option-card--lg {
+        min-height: 420px;
+    }
+}
+
+.option-card .bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.02);
+    transition: transform .3s ease;
+}
+
+.option-card .fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.05) 60%);
+}
+
+.option-card h3 {
+    position: absolute;
+    left: 1.25rem;
+    bottom: 1rem;
+    margin: 0;
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: .5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,.45);
+    /* responsive type: ~28–40px */
+    font-size: clamp(1.75rem, 1.2rem + 1.2vw, 2.5rem);
+}
+
+.option-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(0,0,0,.16);
+}
+
+    .option-card:hover .bg {
+        transform: scale(1.06);
+    }
+
+/* "Coming soon" badge positioning */
+.badge-coming {
+    position: absolute;
+    top: .75rem;
+    right: .75rem;
+    z-index: 2;
+    font-weight: 600;
+}

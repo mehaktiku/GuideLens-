@@ -1,0 +1,29 @@
+﻿@page
+@model CitiesModel
+
+<section class="gl-hero-full d-flex align-items-center justify-content-center text-center"
+         style="background-image:url('@Url.Content("~/img/Hero-img.jpg")')">
+  <div class="gl-hero-inner container">
+    <h1 class="display-4 fw-bold mb-2">Destinations</h1>
+    <p class="lead mb-0">Pick a city to explore</p>
+  </div>
+</section>
+
+<div class="container-fluid px-4 py-4">
+  <div class="row g-4">
+    @foreach (var c in Model.Items)
+    {
+      <!-- 1 col on xs, 2 on md, 3 on lg+, full-bleed container -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <a class="text-decoration-none d-block" asp-page="/City" asp-route-slug="@c.Slug">
+          <div class="option-card option-card--lg">
+            <div class="bg" style="background-image:url('@c.Bg')"></div>
+            <div class="fade"></div>
+            <h3>@c.Name.ToUpper()</h3>
+          </div>
+        </a>
+      </div>
+    }
+  </div>
+</div>
+
