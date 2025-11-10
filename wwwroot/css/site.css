@@ -252,11 +252,132 @@ body {
         transform: scale(1.06);
     }
 
-/* "Coming soon" badge positioning */
 .badge-coming {
     position: absolute;
     top: .75rem;
     right: .75rem;
     z-index: 2;
     font-weight: 600;
+}
+
+.gl-logo {
+    height: 32px; /* controls visual size in navbar */
+    width: auto; /* keeps aspect ratio */
+    image-rendering: -webkit-optimize-contrast; /* looks sharper on some screens */
+}
+
+.gl-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    background: rgba(255, 255, 255, 0.92); /* readable over images */
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+
+/* Logo sizing & clarity */
+.gl-logo {
+    height: 36px; 
+    width: auto;
+    display: block;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+/* Brand text next to logo */
+.gl-brand-text {
+    font-weight: 600;
+    font-size: 1.125rem; 
+    color: #0b1034; 
+    letter-spacing: 0.2px;
+}
+
+
+.gl-navbar .nav-link {
+    color: #333;
+}
+
+    .gl-navbar .nav-link:hover,
+    .gl-navbar .nav-link:focus {
+        color: #111;
+    }
+/* --- NAVBAR BRAND / LOGO --- */
+/* ---------- NAVBAR LOOK & FEEL ---------- */
+.gl-nav {
+    min-height: 64px; 
+}
+
+
+.gl-nav-logo {
+    height: 36px; 
+    width: auto;
+    display: block;
+}
+
+@media (min-width: 992px) { 
+    .gl-nav-logo {
+        height: 40px;
+    }
+}
+
+
+.gl-brand-wordmark {
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: .2px;
+    line-height: 1;
+}
+
+
+.navbar .nav-link {
+    font-weight: 500;
+    color: #3b3b3b;
+    padding-left: .75rem;
+    padding-right: .75rem;
+}
+
+    .navbar .nav-link:hover,
+    .navbar .nav-link:focus {
+        color: #0d6efd;
+        text-decoration: none;
+    }
+
+
+.navbar-brand {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+}
+
+.gl-brand-wordmark {
+    font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    font-weight: 400; 
+    letter-spacing: .2px;
+    line-height: 1;
+}
+
+.gl-hero h1,
+.display-5.fw-bold {
+    font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    font-weight: 400;
+}
+
+
+.navbar-brand {
+    gap: .5rem;
+}
+
+
+.gl-logo {
+    height: 50px; 
+    width: auto;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+
+
+
+.gl-brand-wordmark {
+    font-family: "Cantora One", system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: .2px;
 }
