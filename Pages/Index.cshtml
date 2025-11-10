@@ -1,22 +1,150 @@
 ﻿@page
 @model IndexModel
-@{
-    ViewData["Title"] = "Home page";
-}
+@using GuideLens.Models
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to GuideLens</h1>
-    <h3>Loaded @Model.Items.Count recommendations</h3>
+<div class="container py-4">
+    <!-- Header -->
+    <header class="text-center py-4">
+        <h1 class="display-5 fw-semibold">GuideLens</h1>
+        <p class="text-muted mb-0">A curated, offline-first guide to Cincinnati</p>
+    </header>
 
-    <ul style="text-align: left; max-width: 800px; margin: 20px auto;">
-        @foreach (var r in Model.Items.Take(10))
+    <!-- Controls -->
+    <form method="get" class="bg-light border rounded-3 p-3 mb-4">
+        <div class="row g-2 align-items-end">
+            <!-- Search -->
+            <div class="col-md-5">
+                <label class="form-label">Search</label>
+                <input asp-for="Query.Q" class="form-control" placeholder="Try Skyline, museum, OTR..." />
+            </div>
+
+            <!-- Category -->
+            <div class="col-md-3">
+                <label class="form-label">Category</label>
+                <select asp-for="Query.Category" class="form-select"
+                        asp-items="Html.GetEnumSelectList<CategoryFilter>()"></select>
+            </div>
+
+            <!-- Neighborhood -->
+            <div class="col-md-2">
+                <label class="form-label">Neighborhood</label>
+                <select asp-for="Query.Neighborhood" class="form-select">
+                    <option value="">All</option>
+                    @foreach (var n in Model.Neighborhoods)
+                    {
+                        <option value="@n">@n</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Sort -->
+            <div class="col-md-2">
+                <label class="form-label">Sort by</label>
+                <select asp-for="Query.SortBy" class="form-select">
+                    <option value="name">Name</option>
+                    <option value="area">Neighborhood</option>
+                    <option value="category">Category</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-auto ms-auto">
+                <button class="btn btn-primary w-100">Apply</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Summary -->
+    <div class="mb-3">
+        <strong>@Model.Results.TotalCount</strong> total matches.
+        Showing page <strong>@Model.Query.Page</strong> of <strong>@Model.Results.TotalPages</strong>.
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+        @if (Model.Results.Items?.Any() == true)
         {
-            <li><strong>@r.Name</strong> — @r.Category (@r.Neighborhood)</li>
+            foreach (var r in Model.Results.Items)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <h5 class="card-title mb-1">@r.Name</h5>
+                            <div class="small text-muted mb-2">
+                                @r.Category • @r.Neighborhood
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(r.TheBestOffer))
+                            {
+                                <p class="mb-2"><strong>Best Offer:</strong> @r.TheBestOffer</p>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(r.NoteTip))
+                            {
+                                <p class="mb-0"><strong>Tip:</strong> @r.NoteTip</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
         }
-    </ul>
+        else
+        {
+            <div class="col">
+                <div class="alert alert-warning mb-0">No places match these filters.</div>
+            </div>
+        }
+    </div>
 
-    @if (Model.Items.Count > 10)
+    <!-- Pagination -->
+    @if (Model.Results.TotalPages > 1)
     {
-        <p><em>... and @(Model.Items.Count - 10) more</em></p>
+        <nav class="mt-4" aria-label="pagination">
+            <ul class="pagination justify-content-center">
+                @{
+                    int prev = Math.Max(1, Model.Query.Page - 1);
+                    int next = Math.Min(Model.Results.TotalPages, Model.Query.Page + 1);
+                }
+
+                <li class="page-item @(Model.Query.Page == 1 ? "disabled" : "")">
+                    <a class="page-link"
+                       asp-page="./Index"
+                       asp-route-Q="@Model.Query.Q"
+                       asp-route-Category="@Model.Query.Category"
+                       asp-route-Neighborhood="@Model.Query.Neighborhood"
+                       asp-route-SortBy="@Model.Query.SortBy"
+                       asp-route-Page="@prev"
+                       asp-route-PageSize="@Model.Query.PageSize">
+                        Prev
+                    </a>
+                </li>
+
+                @for (int p = 1; p <= Model.Results.TotalPages; p++)
+                {
+                    <li class="page-item @(p == Model.Query.Page ? "active" : "")">
+                        <a class="page-link"
+                           asp-page="./Index"
+                           asp-route-Q="@Model.Query.Q"
+                           asp-route-Category="@Model.Query.Category"
+                           asp-route-Neighborhood="@Model.Query.Neighborhood"
+                           asp-route-SortBy="@Model.Query.SortBy"
+                           asp-route-Page="@p"
+                           asp-route-PageSize="@Model.Query.PageSize">
+                            @p
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item @(Model.Query.Page == Model.Results.TotalPages ? "disabled" : "")">
+                    <a class="page-link"
+                       asp-page="./Index"
+                       asp-route-Q="@Model.Query.Q"
+                       asp-route-Category="@Model.Query.Category"
+                       asp-route-Neighborhood="@Model.Query.Neighborhood"
+                       asp-route-SortBy="@Model.Query.SortBy"
+                       asp-route-Page="@next"
+                       asp-route-PageSize="@Model.Query.PageSize">
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
     }
 </div>
