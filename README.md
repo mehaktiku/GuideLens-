@@ -2,6 +2,8 @@
 # GuideLens: City Travel Curator Guide
 ---
 
+<img width="975" height="975" alt="image" src="https://github.com/user-attachments/assets/57d6b61e-4eeb-40c1-9dc5-a40f1bbe3228" />
+
 # Overview
 - Curated, **offline-first** guide initially focused on **Cincinnati**, designed to scale across **Ohio** (Columbus, Cleveland, Dayton).
 - Users can **search**, **filter by Category & Neighborhood**, **sort**, and **paginate** curated cards showing **Best Offer** and **Tip**.
