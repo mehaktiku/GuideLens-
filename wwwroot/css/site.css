@@ -18,14 +18,13 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    background: #f7fafc;
+    margin-bottom: 60px;
 }
 .card {
     border-radius: 1rem;
-}
-/* --- GuideLens polish --- */
-body {
-    background: #f7fafc;
+    border-radius: 1rem;
+    transition: transform .12s ease, box-shadow .12s ease;
 }
 
 /* ===== GuideLens Hero ===== */
@@ -101,11 +100,6 @@ body {
     font-weight: 600;
 }
 
-/* Cards */
-.card {
-    border-radius: 1rem;
-    transition: transform .12s ease, box-shadow .12s ease;
-}
 
     .card:hover {
         transform: translateY(-2px);
@@ -120,10 +114,11 @@ body {
 /* HERO: full screen, image covers entire viewport */
 .gl-hero-full {
     position: relative;
-    min-height: 100vh;          /* full height */
+    min-height: 100vh; /* full height */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    height: min(52vh, 520px);
 }
 
 /* Dark overlay so white text and card stand out */
@@ -210,11 +205,6 @@ body {
     .gl-hero-full {
         background-attachment: scroll;
     }
-}
-
-/* Full-bleed hero still okay */
-.gl-hero-full {
-    height: min(52vh, 520px);
 }
 
 /* Bigger, bolder option tiles */
@@ -305,10 +295,12 @@ body {
 
 /* Logo sizing & clarity */
 .gl-logo {
-    height: 36px; 
+    height: 36px;
     width: auto;
     display: block;
     image-rendering: -webkit-optimize-contrast;
+    height: 50px;
+    width: auto;
 }
 
 /* Brand text next to logo */
@@ -353,6 +345,9 @@ body {
     font-size: 1.15rem;
     letter-spacing: .2px;
     line-height: 1;
+    font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    font-weight: 400;
+    letter-spacing: .2px;
 }
 
 
@@ -373,13 +368,7 @@ body {
 .navbar-brand {
     padding-top: .25rem;
     padding-bottom: .25rem;
-}
-
-.gl-brand-wordmark {
-    font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-    font-weight: 400; 
-    letter-spacing: .2px;
-    line-height: 1;
+    gap: .5rem;
 }
 
 .gl-hero h1,
@@ -387,21 +376,6 @@ body {
     font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
     font-weight: 400;
 }
-
-
-.navbar-brand {
-    gap: .5rem;
-}
-
-
-.gl-logo {
-    height: 50px; 
-    width: auto;
-    image-rendering: -webkit-optimize-contrast;
-}
-
-
-
 
 .gl-brand-wordmark {
     font-family: "Cantora One", system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
