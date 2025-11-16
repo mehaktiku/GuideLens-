@@ -47,15 +47,41 @@ body {
         background: linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,.35));
     }
 
-.gl-hero-inner {
-    position: relative;
-    z-index: 2;
-    color: #fff;
+/* Make GuideLens bigger + bolder */
+.gl-hero-inner .display-4 {
+    font-size: clamp(3.2rem, 6vw, 4.8rem); /* responsive size */
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6); /* makes it pop on the image */
 }
 
-.gl-hero .display-5 {
-    text-shadow: 0 2px 16px rgba(0,0,0,.25);
+/* Make the tagline more visible */
+.gl-hero-inner .lead {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #f7f4f4;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    margin-top: 0.25rem;
 }
+
+/* BIG, bold GuideLens title */
+.gl-hero-inner h1 {
+    font-size: 4.2rem; /* bigger than display-4 */
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.85);
+}
+
+/* Make the tagline bright + readable */
+.gl-hero-full .gl-hero-inner .lead {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #ffffff; /* pure white */
+    text-shadow: 0 3px 14px rgba(0, 0, 0, 0.9);
+    margin-top: 0.35rem;
+}
+
 
 @media (max-width: 768px) {
     .gl-hero {
@@ -91,43 +117,45 @@ body {
 }
 
 /* ===== Full-bleed hero ===== */
+/* HERO: full screen, image covers entire viewport */
 .gl-hero-full {
-    min-height: 54vh;
-    width: 100vw;
-    margin-left: calc(50% - 50vw); /* full-bleed trick inside Bootstrap container */
-    margin-right: calc(50% - 50vw);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     position: relative;
+    min-height: 100vh;          /* full height */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-    .gl-hero-full::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.45));
-    }
+/* Dark overlay so white text and card stand out */
+.gl-hero-full::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+}
 
 .gl-hero-inner {
     position: relative;
-    z-index: 2;
-    color: #fff;
-    padding-top: 4.5rem;
-    padding-bottom: 2rem;
+    z-index: 1;
 }
 
-/* Glassy search panel that sits on the hero */
-.gl-search-panel {
-    position: relative;
-    z-index: 2;
-    margin-top: -2.25rem; /* lifts the panel into the hero */
-    border-radius: 1rem;
-    background: rgba(255,255,255,.85);
-    backdrop-filter: blur(6px);
-    box-shadow: 0 .75rem 1.5rem rgba(0,0,0,.12);
+/* Search panel sitting over the image */
+.hero-search {
+    max-width: 950px;
+    margin: 0 auto;             /* center it */
 }
+
+/* Optional: soften labels inside the white search card */
+.hero-search .form-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Remove any old negative margins if you had them for gl-search-panel */
+.gl-search-panel {
+    margin-top: 0;
+}
+
 
 /* Option tiles (used on /City) */
 .option-card {
