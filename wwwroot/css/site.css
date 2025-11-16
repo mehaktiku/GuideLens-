@@ -92,7 +92,7 @@ body {
 
 /* Filter block */
 .gl-filter {
-    border-color: rgba(0,0,0,.06) !important;
+    border-color: rgba(0,0,0,.06);
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.04);
 }
 
@@ -103,11 +103,11 @@ body {
 
     .card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.08) !important;
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.08);
     }
 
 .small.text-muted {
-    color: #6b7280 !important;
+    color: #6b7280;
 }
 
 /* ===== Full-bleed hero ===== */
