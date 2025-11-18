@@ -9,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // 1) Razor Pages
 builder.Services.AddRazorPages();
 
+// Add in-memory caching for query/result caching
+builder.Services.AddMemoryCache();
+
 // 2) Your filtering service
 builder.Services.AddSingleton<RecommendationService>();
 
