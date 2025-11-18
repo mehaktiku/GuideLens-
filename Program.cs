@@ -2,6 +2,7 @@ using System.Text.Json;
 using GuideLens.Services;
 using GuideLens.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,12 @@ builder.Services.AddSingleton<RecommendationService>();
 // 3) HttpClient for external APIs (Open-Meteo, Nominatim, Wikipedia)
 builder.Services.AddHttpClient();
 
+// 4) NEW: Response caching service (used for /api/recommendations)
+builder.Services.AddResponseCaching();
+
 var app = builder.Build();
 
-// 4) Standard middleware
+// 5) Standard middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -27,23 +31,50 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-// 5) Razor Pages endpoints (/, /Index, etc.)
+// 6) NEW: Response caching middleware
+app.UseResponseCaching();
+
+// 7) Razor Pages endpoints (/, /Index, etc.)
 app.MapRazorPages();
 
 //
-// 6) YOUR OWN JSON API: /api/recommendations
+// 8) JSON API: /api/recommendations
 //    Example:
 //    /api/recommendations?city=Cincinnati&q=Eden&category=All&neighborhood=&sortBy=name&page=1&pageSize=12
 //
-app.MapGet("/api/recommendations",
-    ([AsParameters] RecommendationQuery query, RecommendationService svc) =>
+var recEndpoint = app.MapGet("/api/recommendations",
+    ([AsParameters] RecommendationQuery query,
+     RecommendationService svc,
+     HttpContext httpContext) =>
     {
+        // Small safety guard on PageSize (avoid someone requesting 10,000 items)
+        if (query.PageSize <= 0 || query.PageSize > 100)
+        {
+            query.PageSize = 12;
+        }
+
         var result = svc.Query(query);
+
+        // Set HTTP cache headers for clients / ResponseCaching middleware
+        httpContext.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+        {
+            Public = true,
+            MaxAge = TimeSpan.FromSeconds(60)  // cache for 60 seconds
+        };
+
         return Results.Ok(result);
     });
 
+// Attach ResponseCache metadata so ASP.NET Core's ResponseCaching can use it
+recEndpoint.WithMetadata(new ResponseCacheAttribute
+{
+    Duration = 60,
+    Location = ResponseCacheLocation.Any,
+    NoStore = false
+});
+
 //
-// 7) EXTERNAL-API WRAPPER: /api/photo-time-hint
+// 9) EXTERNAL-API WRAPPER: /api/photo-time-hint
 //    Uses Nominatim (OpenStreetMap) + Open-Meteo to get sunset time.
 //
 app.MapGet("/api/photo-time-hint", async (
@@ -57,7 +88,7 @@ app.MapGet("/api/photo-time-hint", async (
         return Results.BadRequest(new { error = "Query parameter 'place' is required." });
     }
 
-    // Build a human-readable query like "Ault Park, Cincinnati, USA"
+    // Build a query like "Ault Park, Cincinnati, USA"
     var locationParts = new List<string> { place };
     if (!string.IsNullOrWhiteSpace(city)) locationParts.Add(city!);
     if (!string.IsNullOrWhiteSpace(country)) locationParts.Add(country!);
@@ -128,9 +159,9 @@ app.MapGet("/api/photo-time-hint", async (
 });
 
 //
-// 8) WIKIPEDIA WRAPPER: /api/about-place
-//    Example:
-//    /api/about-place?title=Skyline%20Chili&lang=en
+// 10) WIKIPEDIA WRAPPER: /api/about-place
+//     Example:
+//     /api/about-place?title=Skyline%20Chili&lang=en
 //
 app.MapGet("/api/about-place", async (
     string title,
