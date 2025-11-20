@@ -15,30 +15,39 @@ builder.Services.AddSingleton<RecommendationService>();
 // 3) HttpClient for external APIs (Open-Meteo, Nominatim, Wikipedia)
 builder.Services.AddHttpClient();
 
-// 4) NEW: Response caching service (used for /api/recommendations)
+// 4) Swagger/OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// 5) Response caching service (used for /api/recommendations)
 builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
-// 5) Standard middleware
+// 6) Standard middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
+}
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-// 6) NEW: Response caching middleware
+// 7) Response caching middleware
 app.UseResponseCaching();
 
-// 7) Razor Pages endpoints (/, /Index, etc.)
+// 8) Razor Pages endpoints (/, /Index, etc.)
 app.MapRazorPages();
 
 //
-// 8) JSON API: /api/recommendations
+// 9) JSON API: /api/recommendations
 //    Example:
 //    /api/recommendations?city=Cincinnati&q=Eden&category=All&neighborhood=&sortBy=name&page=1&pageSize=12
 //
@@ -74,7 +83,7 @@ recEndpoint.WithMetadata(new ResponseCacheAttribute
 });
 
 //
-// 9) EXTERNAL-API WRAPPER: /api/photo-time-hint
+// 10) EXTERNAL-API WRAPPER: /api/photo-time-hint
 //    Uses Nominatim (OpenStreetMap) + Open-Meteo to get sunset time.
 //
 app.MapGet("/api/photo-time-hint", async (
@@ -159,7 +168,7 @@ app.MapGet("/api/photo-time-hint", async (
 });
 
 //
-// 10) WIKIPEDIA WRAPPER: /api/about-place
+// 11) WIKIPEDIA WRAPPER: /api/about-place
 //     Example:
 //     /api/about-place?title=Skyline%20Chili&lang=en
 //
