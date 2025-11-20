@@ -3,6 +3,7 @@ using GuideLens.Services;
 using GuideLens.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddSwaggerGen();
 
 // 5) Response caching service (used for /api/recommendations)
 builder.Services.AddResponseCaching();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
@@ -90,8 +92,15 @@ app.MapGet("/api/photo-time-hint", async (
     string place,
     string? city,
     string? country,
-    IHttpClientFactory httpClientFactory) =>
+    IHttpClientFactory httpClientFactory,
+    Microsoft.Extensions.Caching.Memory.IMemoryCache cache) =>
 {
+    var cacheKey = $"photo-time-hint:{place}:{city}:{country}";
+    if (cache.TryGetValue(cacheKey, out var cachedResult))
+    {
+        return Results.Ok(cachedResult);
+    }
+
     if (string.IsNullOrWhiteSpace(place))
     {
         return Results.BadRequest(new { error = "Query parameter 'place' is required." });
@@ -156,7 +165,7 @@ app.MapGet("/api/photo-time-hint", async (
 
     var sunset = sunsets[0].GetString();
 
-    return Results.Ok(new
+    var result = new
     {
         place,
         city,
@@ -164,7 +173,12 @@ app.MapGet("/api/photo-time-hint", async (
         latitude = lat,
         longitude = lon,
         sunset
-    });
+    };
+
+    // Cache for 10 minutes
+    cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+
+    return Results.Ok(result);
 });
 
 //
@@ -175,8 +189,15 @@ app.MapGet("/api/photo-time-hint", async (
 app.MapGet("/api/about-place", async (
     string title,
     string? lang,
-    IHttpClientFactory httpClientFactory) =>
+    IHttpClientFactory httpClientFactory,
+    Microsoft.Extensions.Caching.Memory.IMemoryCache cache) =>
 {
+    var cacheKey = $"about-place:{title}:{lang}";
+    if (cache.TryGetValue(cacheKey, out var cachedResult))
+    {
+        return Results.Ok(cachedResult);
+    }
+
     if (string.IsNullOrWhiteSpace(title))
     {
         return Results.BadRequest(new { error = "Query parameter 'title' is required." });
@@ -212,12 +233,17 @@ app.MapGet("/api/about-place", async (
         pageUrl = pageProp.GetString();
     }
 
-    return Results.Ok(new
+    var result = new
     {
         title,
         extract,
         pageUrl
-    });
+    };
+
+    // Cache for 10 minutes
+    cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+
+    return Results.Ok(result);
 });
 
 app.Run();
