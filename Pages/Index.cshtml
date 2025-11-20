@@ -51,8 +51,9 @@
 
                 <!-- Search -->
                 <div class="col-12 col-md-5">
-                    <label class="form-label">Search</label>
+                    <label class="form-label" for="search-box">Search</label>
                     <input asp-for="Query.Q"
+                            id="Search-box"
                            class="form-control"
                            placeholder="Try Skyline, museum, park..."
                            list="search-suggestions" />
@@ -75,7 +76,7 @@
 
                 <!-- Apply -->
                 <div class="col-12 col-md-1 text-md-end">
-                    <button class="btn btn-primary w-100 mt-2 mt-md-0">Apply</button>
+                    <button class="btn btn-primary w-100 mt-2 mt-md-0" aria-label="Apply Filters">Apply</button>
                 </div>
             </div>
 
