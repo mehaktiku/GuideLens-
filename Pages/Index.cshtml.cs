@@ -18,7 +18,7 @@ public class IndexModel : PageModel
     public IReadOnlyList<string> Cities { get; } =
         new[] { "Cincinnati", "Columbus", "Cleveland", "Dayton" };
 
-    // ìComing soonî notice for non-Cincinnati cities
+    // ‚ÄúComing soon‚Äù notice for non-Cincinnati cities
     public bool ComingSoon { get; private set; }
 
     // NEW: true when user is opening the page for the first time (no query string yet)
@@ -26,6 +26,7 @@ public class IndexModel : PageModel
 
     public PagedResult<Recommendation> Results { get; private set; } = new();
     public IReadOnlyList<string> Neighborhoods { get; private set; } = Array.Empty<string>();
+    public IReadOnlyList<string> AllNames { get; private set; } = Array.Empty<string>();
 
     public void OnGet()
     {
@@ -40,6 +41,7 @@ public class IndexModel : PageModel
         ComingSoon = !string.Equals(Query.City, "Cincinnati", StringComparison.OrdinalIgnoreCase);
 
         Neighborhoods = _svc.Neighborhoods();
+        AllNames = _svc.GetAllNames();
 
         // ? IMPORTANT:
         // Only hit your recommendation service AFTER the user has interacted

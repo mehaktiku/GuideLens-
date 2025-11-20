@@ -74,4 +74,12 @@ public class RecommendationService
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .OrderBy(s => s, StringComparer.OrdinalIgnoreCase)
             .ToList();
+
+    // For Search Autocomplete
+    public IReadOnlyList<string> GetAllNames() =>
+        _all.Select(r => r.Name)
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(s => s, StringComparer.OrdinalIgnoreCase)
+            .ToList();
 }

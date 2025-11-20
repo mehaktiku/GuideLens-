@@ -54,7 +54,14 @@
                     <label class="form-label">Search</label>
                     <input asp-for="Query.Q"
                            class="form-control"
-                           placeholder="Try Skyline, museum, park..." />
+                           placeholder="Try Skyline, museum, park..."
+                           list="search-suggestions" />
+                    <datalist id="search-suggestions">
+                        @foreach (var name in Model.AllNames)
+                        {
+                            <option value="@name"></option>
+                        }
+                    </datalist>
                 </div>
 
                 <!-- Category -->
