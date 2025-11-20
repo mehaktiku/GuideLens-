@@ -13,6 +13,12 @@ public class RecommendationService
         _all = DataLoader.LoadFromContentRoot(env.ContentRootPath);
     }
 
+    // Constructor for Unit Testing
+    public RecommendationService(List<Recommendation> data)
+    {
+        _all = data;
+    }
+
     public PagedResult<Recommendation> Query(RecommendationQuery q)
     {
         IEnumerable<Recommendation> data = _all;
