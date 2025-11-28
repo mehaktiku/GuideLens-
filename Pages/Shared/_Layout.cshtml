@@ -8,57 +8,59 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GuideLens.styles.css" asp-append-version="true" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cantora+One&display=swap" rel="stylesheet">
-
 </head>
-<body>
+<body class="gl-body-dark">
+    <!-- NAVBAR -->
     <header>
-        <!-- Clean, professional navbar -->
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm gl-nav">
-                <div class="container-xl">
-                    <!-- Brand -->
-                    <a class="navbar-brand d-flex align-items-center gap-2" asp-page="/Index">
-                        <img src="~/img/logo/guide-lens.png"
-                             asp-append-version="true"
-                             alt="Guide Lens logo"
-                             class="gl-logo gl-logo-ring"
-                             width="44" height="44" loading="eager" decoding="async">
-                        <span class="gl-brand-wordmark">Guide Lens</span>
-                    </a>
+        <nav class="navbar navbar-expand-lg navbar-dark gl-navbar">
+            <div class="container-fluid px-4">
 
+                <!-- Brand left -->
+                <a class="navbar-brand d-flex align-items-center" asp-page="/Index">
+                    <img src="~/img/logo/guide-lens.png"
+                         asp-append-version="true"
+                         alt="Guide Lens logo"
+                         class="gl-logo"
+                         width="44"
+                         height="44"
+                         loading="eager"
+                         decoding="async" />
+                    <span class="gl-brand-wordmark ms-2">Guide Lens</span>
+                </a>
 
+                <!-- Mobile toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-                            aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <!-- Links + right text -->
-                    <div class="collapse navbar-collapse justify-content-between" id="mainNav">
-                        <ul class="navbar-nav ms-3">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Cities">Cities</a>
-                            </li>
-                        </ul>
-
-                    </div>
+                <!-- Links pushed to the RIGHT -->
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Cities">Cities</a>
+                        </li>
+                    </ul>
                 </div>
-            </nav>
-        </header>
+            </div>
+        </nav>
+    </header>
 
 
-    <!-- No forced container here so pages can do full-bleed (hero) when needed -->
+    <!-- MAIN CONTENT (no forced container; pages handle their own layout/hero) -->
     <main role="main" class="pb-0">
         @RenderBody()
     </main>
 
-    <footer class="footer text-muted mt-4">
+    <!-- FOOTER -->
+    <footer class="footer text-muted mt-4 gl-footer-dark">
         <div class="container py-3">
             &copy; 2025 - GuideLens -
             <a asp-area="" asp-page="/Privacy">Privacy</a>
