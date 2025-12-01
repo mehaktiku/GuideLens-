@@ -29,20 +29,14 @@ body {
     box-shadow: 0 0 0 0.1rem #ffffff, 0 0 0 0.25rem #ff7a3c;
 }
 
-/* =========================
-   NAVBAR / BRANDING
-   ========================= */
-
-.gl-nav {
-    min-height: 72px;
-    background: #050608;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+body {
+    background: #f7fafc;
+    margin-bottom: 60px;
 }
-
-.navbar {
-    padding-top: 0.45rem;
-    padding-bottom: 0.45rem;
+.card {
+    border-radius: 1rem;
+    border-radius: 1rem;
+    transition: transform .12s ease, box-shadow .12s ease;
 }
 
 /* Logo image – FIXED settings */
@@ -101,32 +95,36 @@ body {
         text-decoration: none;
     }
 
-    .gl-nav .nav-link.active {
-        color: #ffffff;
-        border-bottom: 2px solid #ff7a3c;
-        padding-bottom: 0.5rem;
-    }
+/* Filter block */
+.gl-filter {
+    border-color: rgba(0,0,0,.06);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.04);
+}
 
 /* Hamburger icon on mobile */
 .navbar-toggler {
     border-color: rgba(255,255,255,0.45);
 }
 
-.navbar-toggler-icon {
-    filter: invert(1);
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.08);
+    }
+
+.small.text-muted {
+    color: #6b7280;
 }
 
-/* =========================
-   HERO (HOME + CITY)
-   ========================= */
-
-/* Full-screen hero with image */
+/* ===== Full-bleed hero ===== */
+/* HERO: full screen, image covers entire viewport */
 .gl-hero-full {
     position: relative;
-    min-height: 100vh; /* covers full viewport height */
+    min-height: 100vh; /* full height */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    height: min(52vh, 520px);
 }
 
     /* LIGHTER overlay so hero stays bright */
@@ -220,24 +218,7 @@ body {
     color: #9ca3af !important;
 }
 
-/* Buttons inside cards */
-.card .btn-outline-secondary {
-    border-radius: 999px;
-    border-color: rgba(255, 255, 255, 0.4);
-    color: #f9fafb;
-    font-size: 0.8rem;
-}
-
-    .card .btn-outline-secondary:hover {
-        background: #ff7a3c;
-        border-color: #ff7a3c;
-        color: #000000;
-    }
-
-/* =========================
-   OPTION TILES (CITY / CATEGORY)
-   ========================= */
-
+/* Bigger, bolder option tiles */
 .option-card {
     position: relative;
     border-radius: 18px;
@@ -314,9 +295,14 @@ body {
    FILTER PANEL / FORMS
    ========================= */
 
-.gl-filter {
-    border-color: rgba(0, 0, 0, 0.06) !important;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+/* Logo sizing & clarity */
+.gl-logo {
+    height: 36px;
+    width: auto;
+    display: block;
+    image-rendering: -webkit-optimize-contrast;
+    height: 50px;
+    width: auto;
 }
 
 .form-label {
@@ -336,7 +322,49 @@ body {
     .footer a {
         color: #e5e7eb;
     }
+}
 
-        .footer a:hover {
-            color: #ffb86c;
-        }
+
+.gl-brand-wordmark {
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: .2px;
+    line-height: 1;
+    font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    font-weight: 400;
+    letter-spacing: .2px;
+}
+
+
+.navbar .nav-link {
+    font-weight: 500;
+    color: #3b3b3b;
+    padding-left: .75rem;
+    padding-right: .75rem;
+}
+
+    .navbar .nav-link:hover,
+    .navbar .nav-link:focus {
+        color: #0d6efd;
+        text-decoration: none;
+    }
+
+
+.navbar-brand {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    gap: .5rem;
+}
+
+.gl-hero h1,
+.display-5.fw-bold {
+    font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    font-weight: 400;
+}
+
+.gl-brand-wordmark {
+    font-family: "Cantora One", system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: .2px;
+}

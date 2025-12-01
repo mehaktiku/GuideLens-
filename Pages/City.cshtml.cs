@@ -18,7 +18,7 @@ public class CityModel : PageModel
 
     public bool IsCincinnati => string.Equals(Slug, "cincinnati", System.StringComparison.OrdinalIgnoreCase);
 
-    public string HeroBg { get; private set; } = "/img/Hero-img.jpg";
+   public string HeroBg { get; private set; } = "/img/Hero-img.jpg";
 
     public record CityTile(string Title, string Bg, string TargetUrl, bool ComingSoon = false);
     public List<CityTile> Tiles { get; private set; } = new();
@@ -57,7 +57,7 @@ public class CityModel : PageModel
                 rel.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
             if (System.IO.File.Exists(physical)) return rel;
         }
-        return "/img/Hero-img.jpg";
+        return HeroBg;
     }
 
     private string CatBg(string key)
@@ -92,6 +92,6 @@ public class CityModel : PageModel
             if (System.IO.File.Exists(physical)) return rel;
         }
 
-        return "/img/Hero-img.jpg"; // fallback
+        return HeroBg; // fallback
     }
 }
