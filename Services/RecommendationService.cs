@@ -13,6 +13,12 @@ public class RecommendationService
         _all = DataLoader.LoadFromContentRoot(env.ContentRootPath);
     }
 
+    // Constructor for Unit Testing
+    public RecommendationService(List<Recommendation> data)
+    {
+        _all = data;
+    }
+
     public PagedResult<Recommendation> Query(RecommendationQuery q)
     {
         IEnumerable<Recommendation> data = _all;
@@ -64,6 +70,14 @@ public class RecommendationService
     // For the Neighborhood dropdown
     public IReadOnlyList<string> Neighborhoods() =>
         _all.Select(r => r.Neighborhood)
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(s => s, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+    // For Search Autocomplete
+    public IReadOnlyList<string> GetAllNames() =>
+        _all.Select(r => r.Name)
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .OrderBy(s => s, StringComparer.OrdinalIgnoreCase)

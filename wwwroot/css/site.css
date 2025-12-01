@@ -1,20 +1,32 @@
+﻿/* =========================
+   Base HTML / Body
+   ========================= */
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+body {
+    margin-bottom: 60px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #050608; /* dark background so content pops */
+    color: #f5f5f5;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+/* Remove default blue focus rings from Bootstrap, keep accessibility */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem #ffffff, 0 0 0 0.25rem #ff7a3c;
 }
 
 body {
@@ -27,68 +39,61 @@ body {
     transition: transform .12s ease, box-shadow .12s ease;
 }
 
-/* ===== GuideLens Hero ===== */
-.gl-hero {
-    min-height: 42vh;
-    background-image: url('/img/Hero-img.jpg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    position: relative;
-    margin-bottom: 1.5rem;
+/* Logo image – FIXED settings */
+.gl-logo {
+    height: 45px; /* Slightly larger for mobile visibility */
+    width: auto; /* Maintains aspect ratio */
+    display: block;
+    object-fit: contain;
+    /* REMOVED: image-rendering (was causing pixelation) */
 }
 
-    .gl-hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,.35));
+@media (min-width: 992px) {
+    .gl-logo {
+        height: 85px; /* Optimal desktop size */
     }
-
-/* Make GuideLens bigger + bolder */
-.gl-hero-inner .display-4 {
-    font-size: clamp(3.2rem, 6vw, 4.8rem); /* responsive size */
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6); /* makes it pop on the image */
 }
 
-/* Make the tagline more visible */
-.gl-hero-inner .lead {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: #f7f4f4;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
-    margin-top: 0.25rem;
+/* If you want rounded logo, keep this class on the <img> */
+.gl-logo-ring {
+    border-radius: 999px;
 }
 
-/* BIG, bold GuideLens title */
-.gl-hero-inner h1 {
-    font-size: 4.2rem; /* bigger than display-4 */
-    font-weight: 800;
-    letter-spacing: 0.04em;
+/* Brand text next to logo */
+.gl-brand-wordmark {
+    font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+    letter-spacing: 0.03em;
     color: #ffffff;
-    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.85);
+    line-height: 1;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
 }
 
-/* Make the tagline bright + readable */
-.gl-hero-full .gl-hero-inner .lead {
-    font-size: 1.35rem;
-    font-weight: 600;
-    color: #ffffff; /* pure white */
-    text-shadow: 0 3px 14px rgba(0, 0, 0, 0.9);
-    margin-top: 0.35rem;
+/* Align nav items to the extreme right */
+.gl-nav .navbar-collapse {
+    align-items: center;
 }
 
+.gl-nav .navbar-nav {
+    margin-left: auto; /* pushes Home / Cities to right */
+    gap: 0.25rem;
+}
 
-@media (max-width: 768px) {
-    .gl-hero {
-        background-attachment: scroll;
+/* Nav links styling on dark background */
+.gl-nav .nav-link {
+    font-weight: 500;
+    color: #e5e7eb;
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+    transition: color 0.16s ease, background-color 0.16s ease;
+}
+
+    .gl-nav .nav-link:hover,
+    .gl-nav .nav-link:focus {
+        color: #f97316; /* bright orange accent */
+        text-decoration: none;
     }
-    /* smoother on mobile */
-}
-
 
 /* Filter block */
 .gl-filter {
@@ -96,8 +101,9 @@ body {
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.04);
 }
 
-.form-label {
-    font-weight: 600;
+/* Hamburger icon on mobile */
+.navbar-toggler {
+    border-color: rgba(255,255,255,0.45);
 }
 
 
@@ -121,90 +127,95 @@ body {
     height: min(52vh, 520px);
 }
 
-/* Dark overlay so white text and card stand out */
-.gl-hero-full::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.35);
-}
+    /* LIGHTER overlay so hero stays bright */
+    .gl-hero-full::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient( 180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0.45) 100% );
+    }
 
 .gl-hero-inner {
     position: relative;
     z-index: 1;
 }
 
-/* Search panel sitting over the image */
-.hero-search {
-    max-width: 950px;
-    margin: 0 auto;             /* center it */
-}
-
-/* Optional: soften labels inside the white search card */
-.hero-search .form-label {
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-/* Remove any old negative margins if you had them for gl-search-panel */
-.gl-search-panel {
-    margin-top: 0;
-}
-
-
-/* Option tiles (used on /City) */
-.option-card {
-    height: 220px;
-    border-radius: 1.25rem;
-    position: relative;
-    overflow: hidden;
-    background: #e9eef5;
-    display: flex;
-    align-items: flex-end;
-    padding: 1rem;
-    color: #fff;
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.08);
-    transition: transform .12s ease, box-shadow .12s ease;
-}
-
-    .option-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 .75rem 1.25rem rgba(0,0,0,.12);
-    }
-
-    .option-card .bg {
-        position: absolute;
-        inset: 0;
-        background-size: cover;
-        background-position: center;
-        filter: brightness(.85);
-    }
-
-    .option-card .fade {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(0,0,0,.0) 40%, rgba(0,0,0,.55) 100%);
-    }
-
-    .option-card h3 {
-        position: relative;
-        z-index: 2;
-        margin: 0;
+    /* Main GuideLens title */
+    .gl-hero-inner h1,
+    .gl-hero-inner .display-4 {
+        font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: clamp(3.2rem, 6vw, 4.8rem);
         font-weight: 800;
-        letter-spacing: .5px;
+        letter-spacing: 0.06em;
+        color: #ffffff;
+        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.9);
     }
 
-.badge-coming {
-    position: absolute;
-    top: .75rem;
-    right: .75rem;
-    z-index: 3;
-}
+    /* Tagline under GuideLens title */
+    .gl-hero-inner .lead {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #ffffff;
+        text-shadow: 0 3px 14px rgba(0, 0, 0, 0.95);
+        margin-top: 0.5rem;
+    }
 
+/* On mobile, allow simpler scroll */
 @media (max-width: 768px) {
     .gl-hero-full {
         background-attachment: scroll;
     }
+}
+
+/* =========================
+   HERO SEARCH PANEL
+   ========================= */
+
+.hero-search {
+    max-width: 960px;
+    margin: 1.5rem auto 0 auto;
+}
+
+.gl-search-panel {
+    margin-top: 0;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(10px);
+}
+
+    .gl-search-panel .form-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #222222;
+    }
+
+    .gl-search-panel .form-control,
+    .gl-search-panel .form-select {
+        border-radius: 0.75rem;
+    }
+
+/* =========================
+   CARDS (RECOMMENDATIONS)
+   ========================= */
+
+.card {
+    border-radius: 1rem;
+    border: none;
+    background: #111322;
+    color: #f8fafc;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+    transition: transform 0.14s ease, box-shadow 0.14s ease, background-color 0.14s ease;
+}
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+        background: #171a30;
+    }
+
+.small.text-muted {
+    color: #9ca3af !important;
 }
 
 /* Bigger, bolder option tiles */
@@ -212,22 +223,24 @@ body {
     position: relative;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 10px 24px rgba(0,0,0,.10);
-    transition: transform .25s ease, box-shadow .25s ease;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
     min-height: 220px;
+    background: #1c2538;
+    color: #ffffff;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.option-card--lg { /* use this on big tiles */
+.option-card--lg {
     min-height: 280px;
 }
 
-@media (min-width: 992px) { /* lg and up */
+@media (min-width: 992px) {
     .option-card--lg {
         min-height: 360px;
     }
 }
 
-@media (min-width: 1400px) { /* xl+ really fill space */
+@media (min-width: 1400px) {
     .option-card--lg {
         min-height: 420px;
     }
@@ -239,13 +252,14 @@ body {
     background-size: cover;
     background-position: center;
     transform: scale(1.02);
-    transition: transform .3s ease;
+    transition: transform 0.3s ease;
+    filter: brightness(1);
 }
 
 .option-card .fade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.05) 60%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.15) 60%);
 }
 
 .option-card h3 {
@@ -253,45 +267,33 @@ body {
     left: 1.25rem;
     bottom: 1rem;
     margin: 0;
-    color: #fff;
+    color: #ffffff;
     font-weight: 800;
-    letter-spacing: .5px;
-    text-shadow: 0 2px 8px rgba(0,0,0,.45);
-    /* responsive type: ~28�40px */
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
     font-size: clamp(1.75rem, 1.2rem + 1.2vw, 2.5rem);
 }
 
 .option-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 30px rgba(0,0,0,.16);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
 }
 
     .option-card:hover .bg {
-        transform: scale(1.06);
+        transform: scale(1.08);
     }
 
 .badge-coming {
     position: absolute;
-    top: .75rem;
-    right: .75rem;
+    top: 0.75rem;
+    right: 0.75rem;
     z-index: 2;
     font-weight: 600;
 }
 
-.gl-logo {
-    height: 32px; /* controls visual size in navbar */
-    width: auto; /* keeps aspect ratio */
-    image-rendering: -webkit-optimize-contrast; /* looks sharper on some screens */
-}
-
-.gl-navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1030;
-    background: rgba(255, 255, 255, 0.92); /* readable over images */
-    backdrop-filter: blur(6px);
-    box-shadow: 0 2px 12px rgba(0,0,0,.06);
-}
+/* =========================
+   FILTER PANEL / FORMS
+   ========================= */
 
 /* Logo sizing & clarity */
 .gl-logo {
@@ -303,39 +305,22 @@ body {
     width: auto;
 }
 
-/* Brand text next to logo */
-.gl-brand-text {
+.form-label {
     font-weight: 600;
-    font-size: 1.125rem; 
-    color: #0b1034; 
-    letter-spacing: 0.2px;
 }
 
+/* =========================
+   FOOTER
+   ========================= */
 
-.gl-navbar .nav-link {
-    color: #333;
+.footer {
+    background: #050509;
+    border-top: 1px solid rgba(148, 163, 184, 0.35);
+    color: #9ca3af;
 }
 
-    .gl-navbar .nav-link:hover,
-    .gl-navbar .nav-link:focus {
-        color: #111;
-    }
-/* --- NAVBAR BRAND / LOGO --- */
-/* ---------- NAVBAR LOOK & FEEL ---------- */
-.gl-nav {
-    min-height: 64px; 
-}
-
-
-.gl-nav-logo {
-    height: 36px; 
-    width: auto;
-    display: block;
-}
-
-@media (min-width: 992px) { 
-    .gl-nav-logo {
-        height: 40px;
+    .footer a {
+        color: #e5e7eb;
     }
 }
 

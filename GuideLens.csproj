@@ -11,10 +11,18 @@
     <Content Remove="NewFolder1\**" />
     <EmbeddedResource Remove="NewFolder1\**" />
     <None Remove="NewFolder1\**" />
+    <Compile Remove="GuideLens.Tests\**" />
+    <Content Remove="GuideLens.Tests\**" />
+    <EmbeddedResource Remove="GuideLens.Tests\**" />
+    <None Remove="GuideLens.Tests\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="JsonData\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
 </Project>

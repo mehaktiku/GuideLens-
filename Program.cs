@@ -2,6 +2,8 @@ using System.Text.Json;
 using GuideLens.Services;
 using GuideLens.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
+using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,50 +16,97 @@ builder.Services.AddSingleton<RecommendationService>();
 // 3) HttpClient for external APIs (Open-Meteo, Nominatim, Wikipedia)
 builder.Services.AddHttpClient();
 
+// 4) Swagger/OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// 5) Response caching service (used for /api/recommendations)
+builder.Services.AddResponseCaching();
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 
-// 4) Standard middleware
+// 6) Standard middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
+}
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-// 5) Razor Pages endpoints (/, /Index, etc.)
+// 7) Response caching middleware
+app.UseResponseCaching();
+
+// 8) Razor Pages endpoints (/, /Index, etc.)
 app.MapRazorPages();
 
 //
-// 6) YOUR OWN JSON API: /api/recommendations
+// 9) JSON API: /api/recommendations
 //    Example:
 //    /api/recommendations?city=Cincinnati&q=Eden&category=All&neighborhood=&sortBy=name&page=1&pageSize=12
 //
-app.MapGet("/api/recommendations",
-    ([AsParameters] RecommendationQuery query, RecommendationService svc) =>
+var recEndpoint = app.MapGet("/api/recommendations",
+    ([AsParameters] RecommendationQuery query,
+     RecommendationService svc,
+     HttpContext httpContext) =>
     {
+        // Small safety guard on PageSize (avoid someone requesting 10,000 items)
+        if (query.PageSize <= 0 || query.PageSize > 100)
+        {
+            query.PageSize = 12;
+        }
+
         var result = svc.Query(query);
+
+        // Set HTTP cache headers for clients / ResponseCaching middleware
+        httpContext.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+        {
+            Public = true,
+            MaxAge = TimeSpan.FromSeconds(60)  // cache for 60 seconds
+        };
+
         return Results.Ok(result);
     });
 
+// Attach ResponseCache metadata so ASP.NET Core's ResponseCaching can use it
+recEndpoint.WithMetadata(new ResponseCacheAttribute
+{
+    Duration = 60,
+    Location = ResponseCacheLocation.Any,
+    NoStore = false
+});
+
 //
-// 7) EXTERNAL-API WRAPPER: /api/photo-time-hint
+// 10) EXTERNAL-API WRAPPER: /api/photo-time-hint
 //    Uses Nominatim (OpenStreetMap) + Open-Meteo to get sunset time.
 //
 app.MapGet("/api/photo-time-hint", async (
     string place,
     string? city,
     string? country,
-    IHttpClientFactory httpClientFactory) =>
+    IHttpClientFactory httpClientFactory,
+    Microsoft.Extensions.Caching.Memory.IMemoryCache cache) =>
 {
+    var cacheKey = $"photo-time-hint:{place}:{city}:{country}";
+    if (cache.TryGetValue(cacheKey, out var cachedResult))
+    {
+        return Results.Ok(cachedResult);
+    }
+
     if (string.IsNullOrWhiteSpace(place))
     {
         return Results.BadRequest(new { error = "Query parameter 'place' is required." });
     }
 
-    // Build a human-readable query like "Ault Park, Cincinnati, USA"
+    // Build a query like "Ault Park, Cincinnati, USA"
     var locationParts = new List<string> { place };
     if (!string.IsNullOrWhiteSpace(city)) locationParts.Add(city!);
     if (!string.IsNullOrWhiteSpace(country)) locationParts.Add(country!);
@@ -116,7 +165,7 @@ app.MapGet("/api/photo-time-hint", async (
 
     var sunset = sunsets[0].GetString();
 
-    return Results.Ok(new
+    var result = new
     {
         place,
         city,
@@ -124,19 +173,31 @@ app.MapGet("/api/photo-time-hint", async (
         latitude = lat,
         longitude = lon,
         sunset
-    });
+    };
+
+    // Cache for 10 minutes
+    cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+
+    return Results.Ok(result);
 });
 
 //
-// 8) WIKIPEDIA WRAPPER: /api/about-place
-//    Example:
-//    /api/about-place?title=Skyline%20Chili&lang=en
+// 11) WIKIPEDIA WRAPPER: /api/about-place
+//     Example:
+//     /api/about-place?title=Skyline%20Chili&lang=en
 //
 app.MapGet("/api/about-place", async (
     string title,
     string? lang,
-    IHttpClientFactory httpClientFactory) =>
+    IHttpClientFactory httpClientFactory,
+    Microsoft.Extensions.Caching.Memory.IMemoryCache cache) =>
 {
+    var cacheKey = $"about-place:{title}:{lang}";
+    if (cache.TryGetValue(cacheKey, out var cachedResult))
+    {
+        return Results.Ok(cachedResult);
+    }
+
     if (string.IsNullOrWhiteSpace(title))
     {
         return Results.BadRequest(new { error = "Query parameter 'title' is required." });
@@ -172,12 +233,17 @@ app.MapGet("/api/about-place", async (
         pageUrl = pageProp.GetString();
     }
 
-    return Results.Ok(new
+    var result = new
     {
         title,
         extract,
         pageUrl
-    });
+    };
+
+    // Cache for 10 minutes
+    cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+
+    return Results.Ok(result);
 });
 
 app.Run();
