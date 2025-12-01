@@ -14,31 +14,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Cantora+One&display=swap" rel="stylesheet">
 </head>
 <body class="gl-body-dark">
-    <!-- NAVBAR -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark gl-navbar">
             <div class="container-fluid px-4">
 
-                <!-- Brand left -->
                 <a class="navbar-brand d-flex align-items-center" asp-page="/Index">
                     <img src="~/img/logo/guide-lens.png"
                          asp-append-version="true"
                          alt="Guide Lens logo"
                          class="gl-logo"
-                         width="44"
-                         height="44"
                          loading="eager"
                          decoding="async" />
-                    <span class="gl-brand-wordmark ms-2">Guide Lens</span>
                 </a>
 
-                <!-- Mobile toggle -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
                         aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <!-- Links pushed to the RIGHT -->
                 <div class="collapse navbar-collapse" id="mainNav">
                     <ul class="navbar-nav ms-auto align-items-lg-center">
                         <li class="nav-item">
@@ -54,12 +47,10 @@
     </header>
 
 
-    <!-- MAIN CONTENT (no forced container; pages handle their own layout/hero) -->
     <main role="main" class="pb-0">
         @RenderBody()
     </main>
 
-    <!-- FOOTER -->
     <footer class="footer text-muted mt-4 gl-footer-dark">
         <div class="container py-3">
             &copy; 2025 - GuideLens -

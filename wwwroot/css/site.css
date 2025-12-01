@@ -1,4 +1,4 @@
-/* =========================
+ï»¿/* =========================
    Base HTML / Body
    ========================= */
 html {
@@ -35,7 +35,7 @@ body {
 
 .gl-nav {
     min-height: 72px;
-    background: #050608; /* solid dark like Grill & Go */
+    background: #050608;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
@@ -45,18 +45,18 @@ body {
     padding-bottom: 0.45rem;
 }
 
-/* Logo image – normal size, clear on dark bg */
+/* Logo image â€“ FIXED settings */
 .gl-logo {
-    height: 34px; /* default size */
-    width: auto;
+    height: 45px; /* Slightly larger for mobile visibility */
+    width: auto; /* Maintains aspect ratio */
     display: block;
-    image-rendering: -webkit-optimize-contrast;
     object-fit: contain;
+    /* REMOVED: image-rendering (was causing pixelation) */
 }
 
 @media (min-width: 992px) {
     .gl-logo {
-        height: 40px; /* a bit bigger on large screens */
+        height: 85px; /* Optimal desktop size */
     }
 }
 
@@ -134,7 +134,6 @@ body {
         content: "";
         position: absolute;
         inset: 0;
-        /* much less dark now */
         background: linear-gradient( 180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0.45) 100% );
     }
 
@@ -154,7 +153,7 @@ body {
         text-shadow: 0 4px 18px rgba(0, 0, 0, 0.9);
     }
 
-    /* Tagline under GuideLens title – bright & readable */
+    /* Tagline under GuideLens title */
     .gl-hero-inner .lead {
         font-size: 1.25rem;
         font-weight: 600;
@@ -273,7 +272,7 @@ body {
     background-position: center;
     transform: scale(1.02);
     transition: transform 0.3s ease;
-    filter: brightness(1); /* less dark than before */
+    filter: brightness(1);
 }
 
 .option-card .fade {
