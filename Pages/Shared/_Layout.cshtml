@@ -1,24 +1,31 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - GuideLens</title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/GuideLens.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="~/GuideLens.styles.css" asp-append-version="true" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cantora+One&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css2?family=Cantora+One&amp;display=swap" />
 </head>
-<body class="gl-body-dark">
+
+<body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark gl-navbar">
+        <nav class="navbar navbar-expand-lg gl-nav">
             <div class="container-fluid px-4">
 
-                <a class="navbar-brand d-flex align-items-center" asp-page="/Index">
+                <a class="navbar-brand d-flex align-items-center" asp-page="/Index" aria-label="GuideLens Home">
                     <img src="~/img/logo/guide-lens.png"
                          asp-append-version="true"
                          alt="Guide Lens logo"
@@ -34,33 +41,53 @@
 
                 <div class="collapse navbar-collapse" id="mainNav">
                     <ul class="navbar-nav ms-auto align-items-lg-center">
+
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link @(ViewContext.ActionDescriptor.DisplayName?.Contains("/Index") == true ? "active" : "")"
+                               asp-page="/Index"
+                               aria-current="@(ViewContext.ActionDescriptor.DisplayName?.Contains("/Index") == true ? "page" : null)">
+                                <i class="bi bi-house-door-fill me-1" aria-hidden="true"></i>
+                                Home
+                            </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Cities">Cities</a>
+                            <a class="nav-link @(ViewContext.ActionDescriptor.DisplayName?.Contains("/Cities") == true ? "active" : "")"
+                               asp-page="/Cities"
+                               aria-current="@(ViewContext.ActionDescriptor.DisplayName?.Contains("/Cities") == true ? "page" : null)">
+                                Cities
+                            </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.ActionDescriptor.DisplayName?.Contains("/Contact") == true ? "active" : "")"
+                               asp-page="/Contact"
+                               aria-current="@(ViewContext.ActionDescriptor.DisplayName?.Contains("/Contact") == true ? "page" : null)">
+                                <i class="bi bi-envelope-fill me-1" aria-hidden="true"></i>
+                                Contact
+                            </a>
+                        </li>
+
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-
     <main role="main" class="pb-0">
         @RenderBody()
     </main>
 
-    <footer class="footer text-muted mt-4 gl-footer-dark">
+    <footer class="footer mt-4 gl-footer">
         <div class="container py-3">
             &copy; 2025 - GuideLens -
-            <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <a asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

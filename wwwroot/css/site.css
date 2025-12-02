@@ -1,13 +1,32 @@
 ﻿/* =========================
-   Base HTML / Body
+   GUIDE LENS THEME
+   Light Yellow header/footer (#FFFBE8)
+   Pink page background (#FFDAF0)
+   Dark text/icons
    ========================= */
+
+:root {
+    --gl-page-bg: #FFDAF0; /* pink page background */
+    --gl-chrome: #FFFBE8; /* light yellow for navbar/footer */
+    --gl-text: #000000; /* black text */
+    --gl-muted: rgba(0,0,0,0.70);
+    --gl-primary: #6F35D4; /* purple */
+    --gl-primary-dark: #3D1BA8;
+    --gl-accent: #FFCD61;
+    --gl-border: rgba(0,0,0,0.12);
+    --gl-shadow: 0 16px 40px rgba(2,6,23,0.12);
+    --gl-radius: 16px;
+    --gl-radius-sm: 12px;
+}
+
+/* Base */
 html {
     font-size: 14px;
     position: relative;
     min-height: 100%;
 }
 
-@media (min-width: 768px) {
+@media (min-width:768px) {
     html {
         font-size: 16px;
     }
@@ -15,124 +34,115 @@ html {
 
 body {
     margin-bottom: 60px;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: #050608; /* dark background so content pops */
-    color: #f5f5f5;
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background: var(--gl-page-bg);
+    color: var(--gl-text);
 }
 
-/* Remove default blue focus rings from Bootstrap, keep accessibility */
+/* Links */
+a {
+    color: var(--gl-primary);
+}
+
+    a:hover {
+        color: var(--gl-primary-dark);
+    }
+
+/* Accessible focus ring */
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
 .form-control:focus,
-.form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem #ffffff, 0 0 0 0.25rem #ff7a3c;
+.form-check-input:focus,
+.form-select:focus,
+textarea:focus {
+    box-shadow: 0 0 0 0.15rem rgba(255,205,97,0.65), 0 0 0 0.35rem rgba(111,53,212,0.25);
 }
 
-body {
-    background: #f7fafc;
-    margin-bottom: 60px;
-}
-.card {
-    border-radius: 1rem;
-    border-radius: 1rem;
-    transition: transform .12s ease, box-shadow .12s ease;
+/* =========================
+   NAVBAR (Light Yellow)
+   ========================= */
+.gl-nav {
+    min-height: 72px;
+    background: var(--gl-chrome);
+    border-bottom: 1px solid var(--gl-border);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.08);
 }
 
-/* Logo image – FIXED settings */
+.navbar {
+    padding-top: .45rem;
+    padding-bottom: .45rem;
+}
+
 .gl-logo {
-    height: 45px; /* Slightly larger for mobile visibility */
-    width: auto; /* Maintains aspect ratio */
+    height: 45px;
+    width: auto;
     display: block;
     object-fit: contain;
-    /* REMOVED: image-rendering (was causing pixelation) */
 }
 
-@media (min-width: 992px) {
+@media (min-width:992px) {
     .gl-logo {
-        height: 85px; /* Optimal desktop size */
+        height: 85px;
     }
-}
-
-/* If you want rounded logo, keep this class on the <img> */
-.gl-logo-ring {
-    border-radius: 999px;
-}
-
-/* Brand text next to logo */
-.gl-brand-wordmark {
-    font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-weight: 400;
-    font-size: 1.5rem;
-    letter-spacing: 0.03em;
-    color: #ffffff;
-    line-height: 1;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-}
-
-/* Align nav items to the extreme right */
-.gl-nav .navbar-collapse {
-    align-items: center;
 }
 
 .gl-nav .navbar-nav {
-    margin-left: auto; /* pushes Home / Cities to right */
-    gap: 0.25rem;
+    margin-left: auto;
+    gap: .35rem;
 }
 
-/* Nav links styling on dark background */
 .gl-nav .nav-link {
-    font-weight: 500;
-    color: #e5e7eb;
-    padding-left: 0.9rem;
-    padding-right: 0.9rem;
-    transition: color 0.16s ease, background-color 0.16s ease;
+    font-weight: 900;
+    color: #111827;
+    padding: .45rem .85rem;
+    border-radius: 999px;
+    transition: background-color .16s ease, color .16s ease;
 }
+
+    .gl-nav .nav-link i {
+        color: #111827;
+    }
 
     .gl-nav .nav-link:hover,
     .gl-nav .nav-link:focus {
-        color: #f97316; /* bright orange accent */
+        background: rgba(111,53,212,0.10);
+        color: #111827;
         text-decoration: none;
     }
 
-/* Filter block */
-.gl-filter {
-    border-color: rgba(0,0,0,.06);
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.04);
-}
-
-/* Hamburger icon on mobile */
-.navbar-toggler {
-    border-color: rgba(255,255,255,0.45);
-}
-
-
-    .card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.08);
+    .gl-nav .nav-link.active {
+        background: rgba(111,53,212,0.14);
+        color: #111827;
+        border: 1px solid rgba(111,53,212,0.25);
     }
 
-.small.text-muted {
-    color: #6b7280;
+/* Toggler (dark icon to match light bg) */
+.navbar-toggler {
+    border-color: rgba(0,0,0,0.28);
 }
 
-/* ===== Full-bleed hero ===== */
-/* HERO: full screen, image covers entire viewport */
+.navbar-toggler-icon {
+    filter: none;
+}
+
+/* =========================
+   HERO
+   ========================= */
 .gl-hero-full {
     position: relative;
-    min-height: 100vh; /* full height */
+    min-height: 88vh;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: min(52vh, 520px);
 }
 
-    /* LIGHTER overlay so hero stays bright */
     .gl-hero-full::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient( 180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0.45) 100% );
+        background: linear-gradient( 180deg, rgba(11,16,32,0.55) 0%, rgba(11,16,32,0.35) 55%, rgba(11,16,32,0.45) 100% );
     }
 
 .gl-hero-inner {
@@ -140,107 +150,148 @@ body {
     z-index: 1;
 }
 
-    /* Main GuideLens title */
     .gl-hero-inner h1,
     .gl-hero-inner .display-4 {
-        font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        font-size: clamp(3.2rem, 6vw, 4.8rem);
+        font-family: "Cantora One",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+        font-size: clamp(3.0rem, 6vw, 4.6rem);
         font-weight: 800;
-        letter-spacing: 0.06em;
+        letter-spacing: .06em;
         color: #ffffff;
-        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.9);
+        text-shadow: 0 4px 18px rgba(0,0,0,0.85);
     }
 
-    /* Tagline under GuideLens title */
     .gl-hero-inner .lead {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #ffffff;
-        text-shadow: 0 3px 14px rgba(0, 0, 0, 0.95);
-        margin-top: 0.5rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: rgba(255,255,255,0.88);
+        text-shadow: 0 3px 14px rgba(0,0,0,0.85);
+        margin-top: .5rem;
     }
-
-/* On mobile, allow simpler scroll */
-@media (max-width: 768px) {
-    .gl-hero-full {
-        background-attachment: scroll;
-    }
-}
 
 /* =========================
-   HERO SEARCH PANEL
+   SEARCH PANEL
    ========================= */
-
 .hero-search {
     max-width: 960px;
     margin: 1.5rem auto 0 auto;
 }
 
 .gl-search-panel {
-    margin-top: 0;
     border-radius: 1.25rem;
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.65);
+    background: rgba(255,255,255,0.96);
+    border: 1px solid rgba(0,0,0,0.10);
+    box-shadow: 0 18px 46px rgba(0,0,0,0.25);
     backdrop-filter: blur(10px);
 }
 
     .gl-search-panel .form-label {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #222222;
+        font-size: .9rem;
+        font-weight: 900;
+        color: #000;
     }
 
-    .gl-search-panel .form-control,
-    .gl-search-panel .form-select {
-        border-radius: 0.75rem;
+/* Forms */
+.form-label {
+    font-weight: 800;
+    color: #000;
+}
+
+.form-control,
+.form-select,
+textarea,
+input {
+    background: #fff;
+    color: #000;
+    border: 1px solid rgba(0,0,0,0.16);
+    border-radius: .85rem;
+}
+
+.text-muted {
+    color: var(--gl-muted) !important;
+}
+
+/* Validation */
+.field-validation-error,
+.text-danger {
+    color: #b42318 !important;
+    font-weight: 800;
+}
+
+/* Buttons */
+.btn-primary,
+button.btn-primary {
+    background: var(--gl-primary);
+    border-color: var(--gl-primary);
+    color: #fff;
+    font-weight: 900;
+    border-radius: 999px;
+}
+
+    .btn-primary:hover,
+    button.btn-primary:hover {
+        background: var(--gl-primary-dark);
+        border-color: var(--gl-primary-dark);
     }
 
-/* =========================
-   CARDS (RECOMMENDATIONS)
-   ========================= */
+.btn-outline-secondary {
+    border-radius: 999px;
+    border-color: rgba(111,53,212,0.35);
+    color: var(--gl-primary-dark);
+    font-weight: 800;
+}
 
+    .btn-outline-secondary:hover {
+        background: var(--gl-primary);
+        border-color: var(--gl-primary);
+        color: #fff;
+    }
+
+/* Cards */
 .card {
     border-radius: 1rem;
-    border: none;
-    background: #111322;
-    color: #f8fafc;
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
-    transition: transform 0.14s ease, box-shadow 0.14s ease, background-color 0.14s ease;
+    border: 1px solid var(--gl-border);
+    background: #fff;
+    color: #000;
+    box-shadow: var(--gl-shadow);
+    transition: transform .14s ease, box-shadow .14s ease;
 }
 
     .card:hover {
         transform: translateY(-3px);
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
-        background: #171a30;
+        box-shadow: 0 22px 55px rgba(2,6,23,0.14);
     }
 
-.small.text-muted {
-    color: #9ca3af !important;
+/* No-results on home */
+.gl-empty {
+    border-radius: var(--gl-radius);
+    background: rgba(255,251,232,0.85);
+    border: 1px dashed rgba(0,0,0,0.18);
+    padding: 1.25rem;
 }
 
-/* Bigger, bolder option tiles */
+/* OPTION TILES (Cities/City pages) */
 .option-card {
     position: relative;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
     min-height: 220px;
-    background: #1c2538;
-    color: #ffffff;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.12);
+    box-shadow: 0 14px 30px rgba(2,6,23,0.18);
+    transition: transform .25s ease, box-shadow .25s ease;
 }
 
 .option-card--lg {
     min-height: 280px;
 }
 
-@media (min-width: 992px) {
+@media (min-width:992px) {
     .option-card--lg {
         min-height: 360px;
     }
 }
 
-@media (min-width: 1400px) {
+@media (min-width:1400px) {
     .option-card--lg {
         min-height: 420px;
     }
@@ -252,14 +303,13 @@ body {
     background-size: cover;
     background-position: center;
     transform: scale(1.02);
-    transition: transform 0.3s ease;
-    filter: brightness(1);
+    transition: transform .3s ease;
 }
 
 .option-card .fade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.15) 60%);
+    background: linear-gradient(to top, rgba(11,16,32,0.82) 0%, rgba(11,16,32,0.12) 70%);
 }
 
 .option-card h3 {
@@ -267,16 +317,16 @@ body {
     left: 1.25rem;
     bottom: 1rem;
     margin: 0;
-    color: #ffffff;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
-    font-size: clamp(1.75rem, 1.2rem + 1.2vw, 2.5rem);
+    color: #fff;
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+    font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.4rem);
 }
 
 .option-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 20px 45px rgba(2,6,23,0.24);
 }
 
     .option-card:hover .bg {
@@ -285,42 +335,39 @@ body {
 
 .badge-coming {
     position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
+    top: .75rem;
+    right: .75rem;
     z-index: 2;
-    font-weight: 600;
+    font-weight: 900;
+    background: var(--gl-accent);
+    color: #111827;
+    border: 1px solid rgba(0,0,0,0.15);
 }
 
-/* =========================
-   FILTER PANEL / FORMS
-   ========================= */
-
-/* Logo sizing & clarity */
-.gl-logo {
-    height: 36px;
-    width: auto;
-    display: block;
-    image-rendering: -webkit-optimize-contrast;
-    height: 50px;
-    width: auto;
+/* Pagination */
+.pagination .page-link {
+    color: #000;
+    border-color: rgba(0,0,0,0.12);
 }
 
-.form-label {
-    font-weight: 600;
+.pagination .page-item.active .page-link {
+    background: var(--gl-primary);
+    border-color: var(--gl-primary);
+    color: #fff;
 }
 
-/* =========================
-   FOOTER
-   ========================= */
-
+/* Footer (Light Yellow) */
+.gl-footer,
 .footer {
-    background: #050509;
-    border-top: 1px solid rgba(148, 163, 184, 0.35);
-    color: #9ca3af;
+    background: var(--gl-chrome);
+    border-top: 1px solid var(--gl-border);
+    color: #111827;
 }
 
+    .gl-footer a,
     .footer a {
-        color: #e5e7eb;
+        color: var(--gl-primary);
+        font-weight: 900;
     }
 }
 
@@ -335,36 +382,61 @@ body {
     letter-spacing: .2px;
 }
 
+        .gl-footer a:hover,
+        .footer a:hover {
+            color: var(--gl-primary-dark);
+        }
 
-.navbar .nav-link {
-    font-weight: 500;
-    color: #3b3b3b;
-    padding-left: .75rem;
-    padding-right: .75rem;
+/* Contact page helper */
+.page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
 }
 
-    .navbar .nav-link:hover,
-    .navbar .nav-link:focus {
-        color: #0d6efd;
-        text-decoration: none;
+    .page h1 {
+        font-family: "Cantora One",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+        font-size: 2.2rem;
+        margin-bottom: .25rem;
     }
 
+    .page .muted {
+        color: var(--gl-muted);
+        margin-bottom: 1.25rem;
+    }
 
-.navbar-brand {
-    padding-top: .25rem;
-    padding-bottom: .25rem;
-    gap: .5rem;
+    .page form.card {
+        padding: 1.25rem;
+        border-radius: var(--gl-radius);
+    }
+
+.form-row {
+    margin-bottom: 1rem;
 }
 
-.gl-hero h1,
-.display-5.fw-bold {
-    font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-    font-weight: 400;
+    .form-row label {
+        display: block;
+        font-weight: 800;
+        margin-bottom: .35rem;
+    }
+
+    .form-row input, .form-row textarea {
+        width: 100%;
+    }
+
+.alert-success {
+    background: rgba(34,197,94,0.15);
+    border: 1px solid rgba(34,197,94,0.35);
+    color: #064e3b;
+    padding: .9rem 1rem;
+    border-radius: var(--gl-radius-sm);
+    margin-bottom: 1rem;
+    font-weight: 800;
 }
 
-.gl-brand-wordmark {
-    font-family: "Cantora One", system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
-    font-size: 20px;
-    line-height: 1;
-    letter-spacing: .2px;
+.field-error {
+    display: block;
+    margin-top: .25rem;
+    color: #b42318;
+    font-weight: 800;
 }

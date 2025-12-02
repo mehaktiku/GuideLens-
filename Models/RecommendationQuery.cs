@@ -18,5 +18,6 @@ public class RecommendationQuery
     public int Page { get; set; } = DefaultPage;
     public int PageSize { get; set; } = DefaultPageLength;
 
-    public string City { get; set; } = DefaultCity;
-}        
+    public string? City { get; set; } = "";
+
+}

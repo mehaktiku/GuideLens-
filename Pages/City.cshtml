@@ -5,29 +5,27 @@
          style="background-image:url('@Model.HeroBg')">
     <div class="gl-hero-inner container">
         <h1 class="display-4 fw-bold mb-2">@Model.CityDisplay</h1>
-        <p class="lead mb-0">Discover curated ideas, tips & maps</p>
+        <p class="lead mb-0">Discover curated ideas, tips &amp; maps</p>
     </div>
 </section>
 
 <div class="container-fluid px-4 py-4">
-  <div class="row g-4">
-    @foreach (var t in Model.Tiles)
-    {
-      <!-- 1 col on xs, 2 on md, 3 on lg+ -->
-      <div class="col-12 col-md-6 col-lg-4">
-        <a class="text-decoration-none d-block position-relative" href="@t.TargetUrl">
-          @if (t.ComingSoon)
-          {
-              <span class="badge bg-secondary badge-coming">Coming soon</span>
-          }
-          <div class="option-card option-card--lg">
-            <div class="bg" style="background-image:url('@t.Bg')"></div>
-            <div class="fade"></div>
-            <h3>@t.Title.ToUpper()</h3>
-          </div>
-        </a>
-      </div>
-    }
-  </div>
+    <div class="row g-4">
+        @foreach (var t in Model.Tiles)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <a class="text-decoration-none d-block position-relative" href="@t.TargetUrl">
+                    @if (t.ComingSoon)
+                    {
+                        <span class="badge bg-secondary badge-coming">Coming soon</span>
+                    }
+                    <div class="option-card option-card--lg">
+                        <div class="bg" style="background-image:url('@t.Bg')"></div>
+                        <div class="fade"></div>
+                        <h3>@t.Title.ToUpper()</h3>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
 </div>
-

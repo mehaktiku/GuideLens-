@@ -1,67 +1,57 @@
 ﻿@page
 @model IndexModel
 @using GuideLens.Models
+@using System.Text.Json
 
 @{
-    // We still build this in case you want to keep the JSON link later,
-    // but we’re no longer showing it in the UI.
-    var baseApi = Url.Content("~/api/recommendations");
-    var city = System.Uri.EscapeDataString(Model.Query.City ?? "");
-    var q = System.Uri.EscapeDataString(Model.Query.Q ?? "");
-    var neighborhood = System.Uri.EscapeDataString(Model.Query.Neighborhood ?? "");
+    ViewData["Title"] = "Home";
 
-    var apiUrl = $"{baseApi}" +
-                 $"?city={city}" +
-                 $"&q={q}" +
-                 $"&category={Model.Query.Category}" +
-                 $"&neighborhood={neighborhood}" +
-                 $"&sortBy={Model.Query.SortBy}" +
-                 $"&page={Model.Query.Page}" +
-                 $"&pageSize={Model.Query.PageSize}";
-
+    bool hasQuery = !string.IsNullOrWhiteSpace(Model.Query?.Q);
     bool hasResults = Model.Results?.Items?.Any() == true;
 }
 
-<!-- FULL-SCREEN HERO WITH SEARCH INSIDE -->
 <section class="gl-hero-full d-flex align-items-center text-center"
          style="background-image:url('@Url.Content("~/img/Hero-img.jpg")')">
     <div class="gl-hero-inner container">
         <div class="mb-4">
             <h1 class="display-4 fw-bold mb-2 text-white">GuideLens</h1>
-            <p class="lead mb-0 text-white-50">
-                Cincinnati &amp; Ohio
-            </p>
+            <p class="lead mb-0 text-white-50">Cincinnati &amp; Ohio</p>
         </div>
 
-        <!-- SEARCH PANEL FLOATING ON THE HERO IMAGE -->
-        <form method="get"
-              class="gl-search-panel hero-search bg-white rounded-3 shadow-lg p-3 p-md-4">
+        <form method="get" class="gl-search-panel hero-search rounded-3 shadow-lg p-3 p-md-4" id="glSearchForm">
             <div class="row g-3 align-items-end">
 
-                <!-- City -->
+                <!-- City: typeahead + placeholder -->
                 <div class="col-12 col-md-3">
                     <label class="form-label">City</label>
-                    <select asp-for="Query.City" class="form-select">
-                        @foreach (var c in Model.Cities)
-                        {
-                            <option value="@c" selected="@(Model.Query.City == c)">@c</option>
-                        }
-                    </select>
+
+                    <input asp-for="Query.City"
+                           id="glCity"
+                           class="form-control"
+                           placeholder="Select a city..."
+                           list="city-suggestions"
+                           autocomplete="off" />
+
+                    <!-- stays empty; JS fills only after typing -->
+                    <datalist id="city-suggestions"></datalist>
+
+                    <small id="glCityError" class="text-danger d-none">
+                        Please select a city from the list.
+                    </small>
                 </div>
 
-                <!-- Search -->
+                <!-- Search: typeahead -->
                 <div class="col-12 col-md-5">
                     <label class="form-label">Search</label>
+
                     <input asp-for="Query.Q"
+                           id="glSearch"
                            class="form-control"
-                           placeholder="Try Skyline, museum, park..."
-                           list="search-suggestions" />
-                    <datalist id="search-suggestions">
-                        @foreach (var name in Model.AllNames)
-                        {
-                            <option value="@name"></option>
-                        }
-                    </datalist>
+                           placeholder="Type to search (e.g., Skyline, museum, park...)"
+                           list="search-suggestions"
+                           autocomplete="off" />
+
+                    <datalist id="search-suggestions"></datalist>
                 </div>
 
                 <!-- Category -->
@@ -80,54 +70,65 @@
             </div>
 
             <p class="small text-muted mt-3 mb-0 text-start">
-                Start by searching for a place, food, or neighborhood and then click <strong>Apply</strong>.
+                Choose a city and type something in <strong>Search</strong>, then click <strong>Apply</strong>.
             </p>
         </form>
     </div>
 </section>
 
-<!-- RESULTS SECTION BELOW THE HERO -->
 <div class="container py-4">
 
-    @* Optional info note when a non-Cincinnati city is chosen (data coming soon) *@
-    @if (Model.ComingSoon)
+    @if (Model.ComingSoon
+        && !string.IsNullOrWhiteSpace(Model.Query?.City)
+        && !string.Equals(Model.Query.City, "Cincinnati", StringComparison.OrdinalIgnoreCase))
     {
         <div class="alert alert-info border mb-3">
             <strong>@Model.Query.City</strong> data coming soon.
         </div>
     }
 
-    @if (hasResults)
+
+    @if (!hasQuery)
     {
-        <!-- Summary -->
+        <div class="gl-empty">
+            <strong>No results yet.</strong>
+            <div class="text-muted">Type something in the Search box and hit Apply.</div>
+        </div>
+    }
+    else if (!hasResults)
+    {
+        <div class="gl-empty">
+            <strong>No matches found.</strong>
+            <div class="text-muted">Try a different keyword (or category) and hit Apply.</div>
+        </div>
+    }
+    else
+    {
         <div class="mb-3">
-            <strong>@Model.Results.TotalCount</strong> total matches.
+            <strong>@Model.Results!.TotalCount</strong> total matches.
             Showing page <strong>@Model.Query.Page</strong> of <strong>@Model.Results.TotalPages</strong>.
         </div>
 
-        <!-- Cards Grid -->
         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
-            @foreach (var r in Model.Results.Items)
+            @foreach (var r in Model.Results!.Items)
             {
                 <div class="col">
-                    <div class="card h-100 shadow-sm border-0">
+                    <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title mb-1">@r.Name</h5>
-                            <div class="small text-muted mb-2">
-                                @r.Category • @r.Neighborhood
-                            </div>
+                            <div class="small text-muted mb-2">@r.Category • @r.Neighborhood</div>
 
                             @if (!string.IsNullOrWhiteSpace(r.TheBestOffer))
                             {
                                 <p class="mb-2"><strong>Best Offer:</strong> @r.TheBestOffer</p>
                             }
+
                             @if (!string.IsNullOrWhiteSpace(r.NoteTip))
                             {
                                 <p class="mb-2"><strong>Tip:</strong> @r.NoteTip</p>
                             }
 
                             <div class="mt-2 d-flex flex-wrap gap-2">
-                                <!-- Photo Time Hint -->
                                 <button type="button"
                                         class="btn btn-sm btn-outline-secondary gl-photo-hint"
                                         data-place="@r.Name"
@@ -135,7 +136,6 @@
                                     Photo time hint
                                 </button>
 
-                                <!-- About this place -->
                                 <button type="button"
                                         class="btn btn-sm btn-outline-secondary gl-about-place"
                                         data-title="@r.Name"
@@ -148,67 +148,10 @@
                 </div>
             }
         </div>
-
-        <!-- Pagination -->
-        @if (Model.Results.TotalPages > 1)
-        {
-            <nav class="mt-4" aria-label="pagination">
-                <ul class="pagination justify-content-center">
-                    @{
-                        int prev = Math.Max(1, Model.Query.Page - 1);
-                        int next = Math.Min(Model.Results.TotalPages, Model.Query.Page + 1);
-                    }
-
-                    <li class="page-item @(Model.Query.Page == 1 ? "disabled" : "")">
-                        <a class="page-link"
-                           asp-page="./Index"
-                           asp-route-Q="@Model.Query.Q"
-                           asp-route-Category="@Model.Query.Category"
-                           asp-route-Neighborhood="@Model.Query.Neighborhood"
-                           asp-route-SortBy="@Model.Query.SortBy"
-                           asp-route-City="@Model.Query.City"
-                           asp-route-Page="@prev"
-                           asp-route-PageSize="@Model.Query.PageSize">
-                            Prev
-                        </a>
-                    </li>
-
-                    @for (int p = 1; p <= Model.Results.TotalPages; p++)
-                    {
-                        <li class="page-item @(p == Model.Query.Page ? "active" : "")">
-                            <a class="page-link"
-                               asp-page="./Index"
-                               asp-route-Q="@Model.Query.Q"
-                               asp-route-Category="@Model.Query.Category"
-                               asp-route-Neighborhood="@Model.Query.Neighborhood"
-                               asp-route-SortBy="@Model.Query.SortBy"
-                               asp-route-City="@Model.Query.City"
-                               asp-route-Page="@p"
-                               asp-route-PageSize="@Model.Query.PageSize">
-                                @p
-                            </a>
-                        </li>
-                    }
-
-                    <li class="page-item @(Model.Query.Page == Model.Results.TotalPages ? "disabled" : "")">
-                        <a class="page-link"
-                           asp-page="./Index"
-                           asp-route-Q="@Model.Query.Q"
-                           asp-route-Category="@Model.Query.Category"
-                           asp-route-Neighborhood="@Model.Query.Neighborhood"
-                           asp-route-SortBy="@Model.Query.SortBy"
-                           asp-route-City="@Model.Query.City"
-                           asp-route-Page="@next"
-                           asp-route-PageSize="@Model.Query.PageSize">
-                            Next
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        }
     }
 </div>
-<!-- ABOUT PLACE MODAL (Wikipedia summary) -->
+
+<!-- About modal -->
 <div class="modal fade" id="aboutPlaceModal" tabindex="-1"
      aria-labelledby="aboutPlaceModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -220,15 +163,11 @@
             </div>
 
             <div class="modal-body">
-                <p id="aboutPlaceModalExtract" class="mb-0 small text-muted">
-                    <!-- JS will inject the summary text here -->
-                </p>
+                <p id="aboutPlaceModalExtract" class="mb-0 small text-muted"></p>
             </div>
 
             <div class="modal-footer d-flex justify-content-between">
-                <small id="aboutPlaceModalSource" class="text-muted">
-                    Source: Wikipedia
-                </small>
+                <small id="aboutPlaceModalSource" class="text-muted">Source: Wikipedia</small>
                 <a id="aboutPlaceReadMore"
                    href="#"
                    target="_blank"
@@ -240,3 +179,89 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const form = document.getElementById("glSearchForm");
+
+            const cityInput = document.getElementById("glCity");
+            const cityDL = document.getElementById("city-suggestions");
+            const cityErr = document.getElementById("glCityError");
+
+            const searchInput = document.getElementById("glSearch");
+            const searchDL = document.getElementById("search-suggestions");
+
+            const cities = @Html.Raw(JsonSerializer.Serialize(Model.Cities ?? new List<string>()));
+            const allNames = @Html.Raw(JsonSerializer.Serialize(Model.AllNames ?? new List<string>()));
+
+            const MAX_CITY = 10;
+            const MAX_SEARCH = 18;
+
+            function fillDatalist(dl, items, term, minLen, maxItems) {
+                dl.innerHTML = "";
+                const t = (term || "").trim().toLowerCase();
+                if (t.length < minLen) return;
+
+                let count = 0;
+                for (const it of items) {
+                    if (!it) continue;
+                    if (it.toLowerCase().includes(t)) {
+                        const opt = document.createElement("option");
+                        opt.value = it;
+                        dl.appendChild(opt);
+                        count++;
+                        if (count >= maxItems) break;
+                    }
+                }
+            }
+
+            // City: list appears only after typing 1+ char
+            if (cityInput && cityDL) {
+                cityInput.addEventListener("input", e => {
+                    cityErr?.classList.add("d-none");
+                    fillDatalist(cityDL, cities, e.target.value, 1, MAX_CITY);
+                });
+
+                cityInput.addEventListener("focus", () => {
+                    // DO NOT show list unless user typed something
+                    fillDatalist(cityDL, cities, cityInput.value, 1, MAX_CITY);
+                });
+
+                // If they click and it's empty, keep it empty
+                cityInput.addEventListener("click", () => {
+                    if (!(cityInput.value || "").trim()) cityDL.innerHTML = "";
+                });
+            }
+
+            // Search: list appears only after typing 2+ chars
+            if (searchInput && searchDL) {
+                searchInput.addEventListener("input", e =>
+                    fillDatalist(searchDL, allNames, e.target.value, 2, MAX_SEARCH)
+                );
+
+                searchInput.addEventListener("focus", () =>
+                    fillDatalist(searchDL, allNames, searchInput.value, 2, MAX_SEARCH)
+                );
+
+                searchInput.addEventListener("click", () => {
+                    if (((searchInput.value || "").trim().length) < 2) searchDL.innerHTML = "";
+                });
+            }
+
+            // Optional: prevent submitting an invalid city value (must be from list)
+            if (form && cityInput) {
+                form.addEventListener("submit", (e) => {
+                    const v = (cityInput.value || "").trim();
+                    if (!v) return; // allow empty if you want
+                    const ok = cities.includes(v);
+                    if (!ok) {
+                        e.preventDefault();
+                        cityErr?.classList.remove("d-none");
+                        cityInput.focus();
+                    }
+                });
+            }
+        })();
+    </script>
+}
