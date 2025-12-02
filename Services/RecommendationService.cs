@@ -76,10 +76,21 @@ public class RecommendationService
             .ToList();
 
     // For Search Autocomplete
-    public IReadOnlyList<string> GetAllNames() =>
-        _all.Select(r => r.Name)
-            .Where(s => !string.IsNullOrWhiteSpace(s))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(s => s, StringComparer.OrdinalIgnoreCase)
-            .ToList();
+    public IReadOnlyList<string> GetAllNames()
+    {
+        var names = _all.Select(r => r.Name);
+        var cats = _all.Select(r => r.Category);
+        var hoods = _all.Select(r => r.Neighborhood);
+        var offers = _all.Select(r => r.TheBestOffer);
+        var tips = _all.Select(r => r.NoteTip);
+
+        return names.Concat(cats)
+                    .Concat(hoods)
+                    .Concat(offers)
+                    .Concat(tips)
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(s => s, StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+    }
 }

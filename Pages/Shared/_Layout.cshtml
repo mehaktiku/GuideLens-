@@ -21,8 +21,8 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg gl-nav">
+    <div class="header">
+        <div class="navbar navbar-expand-lg gl-nav">
             <div class="container-fluid px-4">
 
                 <a class="navbar-brand d-flex align-items-center" asp-page="/Index" aria-label="GuideLens Home">
@@ -75,19 +75,19 @@
                     </ul>
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
+    </div>
 
-    <main role="main" class="pb-0">
+    <div id="main" class="pb-0">
         @RenderBody()
-    </main>
+    </div>
 
-    <footer class="footer mt-4 gl-footer">
+    <div class="footer mt-4 gl-footer">
         <div class="container py-3">
             &copy; 2025 - GuideLens -
             <a asp-page="/Privacy">Privacy</a>
         </div>
-    </footer>
+    </div>
 
     <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
