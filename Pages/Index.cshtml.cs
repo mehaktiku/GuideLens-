@@ -15,8 +15,8 @@ public class IndexModel : PageModel
     public RecommendationQuery Query { get; set; } = new();
 
     // City dropdown
-    public IReadOnlyList<string> Cities { get; } =
-        new[] { "Cincinnati", "Columbus", "Cleveland", "Dayton" };
+    public static class CityConstants { public const string Cincinnati = "Cincinnati"; /* ... other cities */ }
+    public IReadOnlyList<string> Cities { get; } = new List<string> { CityConstants.Cincinnati, "Columbus", "Cleveland", "Dayton" }.AsReadOnly();
 
     // “Coming soon” notice for non-Cincinnati cities
     public bool ComingSoon { get; private set; }
@@ -36,7 +36,7 @@ public class IndexModel : PageModel
         
 
         // UI hint only
-        ComingSoon = !string.Equals(Query.City, "Cincinnati", StringComparison.OrdinalIgnoreCase);
+        ComingSoon = !string.Equals(Query.City, nameof(Cities.Cincinnati), StringComparison.OrdinalIgnoreCase);
 
         Neighborhoods = _svc.Neighborhoods();
         AllNames = _svc.GetAllNames();

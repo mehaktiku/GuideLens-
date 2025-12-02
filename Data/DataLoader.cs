@@ -18,10 +18,17 @@ namespace GuideLens.Data
         }
 
         // Convenience: load from 'JsonData/CincinnatiData.json' relative to content root
-        public static List<Recommendation> LoadFromContentRoot(string contentRootPath)
+
+
+        public static Task<List<Recommendation>> LoadFromContentRootAsync(string contentRootPath)
         {
-            var path = Path.Combine(contentRootPath, "JsonData", "CincinnatiData.json");
-            return LoadAll(path);
+            var path = Path.Combine(contentRootPath, "JsonData","CincinnatiData.json");
+            return LoadAllAsync(path);
+        }
+
+        private static async Task<List<Recommendation>> LoadAllAsync(string path)
+        {
+            throw new NotImplementedException();
         }
     }
 }
