@@ -6,7 +6,8 @@
 @{
     ViewData["Title"] = "Home";
 
-    bool hasQuery = !string.IsNullOrWhiteSpace(Model.Query?.Q);
+    // A search has been performed whenever there is any query string
+    bool hasQuery = !Model.IsInitialSearch;
     bool hasResults = Model.Results?.Items?.Any() == true;
 }
 
@@ -78,6 +79,7 @@
 
 <div class="container py-4">
 
+    @* Info banner for non-Cincinnati cities *@
     @if (Model.ComingSoon
         && !string.IsNullOrWhiteSpace(Model.Query?.City)
         && !string.Equals(Model.Query.City, "Cincinnati", StringComparison.OrdinalIgnoreCase))
@@ -87,67 +89,70 @@
         </div>
     }
 
-
-    @if (!hasQuery)
+    @* Only show empty states / results when we actually have data (i.e., Cincinnati) *@
+    @if (!Model.ComingSoon)
     {
-        <div class="gl-empty">
-            <strong>No results yet.</strong>
-            <div class="text-muted">Type something in the Search box and hit Apply.</div>
-        </div>
-    }
-    else if (!hasResults)
-    {
-        <div class="gl-empty">
-            <strong>No matches found.</strong>
-            <div class="text-muted">Try a different keyword (or category) and hit Apply.</div>
-        </div>
-    }
-    else
-    {
-        <div class="mb-3">
-            <strong>@Model.Results!.TotalCount</strong> total matches.
-            Showing page <strong>@Model.Query.Page</strong> of <strong>@Model.Results.TotalPages</strong>.
-        </div>
+        @if (!hasQuery)
+        {
+            <div class="gl-empty">
+                <strong>No results yet.</strong>
+                <div class="text-muted">Type something in the Search box and hit Apply.</div>
+            </div>
+        }
+        else if (!hasResults)
+        {
+            <div class="gl-empty">
+                <strong>No matches found.</strong>
+                <div class="text-muted">Try a different keyword (or category) and hit Apply.</div>
+            </div>
+        }
+        else
+        {
+            <div class="mb-3">
+                <strong>@Model.Results!.TotalCount</strong> total matches.
+                Showing page <strong>@Model.Query.Page</strong> of <strong>@Model.Results.TotalPages</strong>.
+            </div>
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
-            @foreach (var r in Model.Results!.Items)
-            {
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title mb-1">@r.Name</h5>
-                            <div class="small text-muted mb-2">@r.Category • @r.Neighborhood</div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+                @foreach (var r in Model.Results!.Items)
+                {
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title mb-1">@r.Name</h5>
+                                <div class="small text-muted mb-2">@r.Category • @r.Neighborhood</div>
 
-                            @if (!string.IsNullOrWhiteSpace(r.TheBestOffer))
-                            {
-                                <p class="mb-2"><strong>Best Offer:</strong> @r.TheBestOffer</p>
-                            }
+                                @if (!string.IsNullOrWhiteSpace(r.TheBestOffer))
+                                {
+                                    <p class="mb-2"><strong>Best Offer:</strong> @r.TheBestOffer</p>
+                                }
 
-                            @if (!string.IsNullOrWhiteSpace(r.NoteTip))
-                            {
-                                <p class="mb-2"><strong>Tip:</strong> @r.NoteTip</p>
-                            }
+                                @if (!string.IsNullOrWhiteSpace(r.NoteTip))
+                                {
+                                    <p class="mb-2"><strong>Tip:</strong> @r.NoteTip</p>
+                                }
 
-                            <div class="mt-2 d-flex flex-wrap gap-2">
-                                <button type="button"
-                                        class="btn btn-sm btn-outline-secondary gl-photo-hint"
-                                        data-place="@r.Name"
-                                        data-city="@Model.Query.City">
-                                    Photo time hint
-                                </button>
+                                <div class="mt-2 d-flex flex-wrap gap-2">
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-secondary gl-photo-hint"
+                                            data-place="@r.Name"
+                                            data-city="@Model.Query.City">
+                                        Photo time hint
+                                    </button>
 
-                                <button type="button"
-                                        class="btn btn-sm btn-outline-secondary gl-about-place"
-                                        data-title="@r.Name"
-                                        data-lang="en">
-                                    About this place
-                                </button>
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-secondary gl-about-place"
+                                            data-title="@r.Name"
+                                            data-lang="en">
+                                        About this place
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+        }
     }
 </div>
 

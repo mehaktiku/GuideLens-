@@ -21,7 +21,7 @@ public class IndexModel : PageModel
     // “Coming soon” notice for non-Cincinnati cities
     public bool ComingSoon { get; private set; }
 
-    // NEW: true when user is opening the page for the first time (no query string yet)
+    // true when user is opening the page for the first time (no query string yet)
     public bool IsInitialSearch { get; private set; }
 
     public PagedResult<Recommendation> Results { get; private set; } = new();
@@ -33,22 +33,21 @@ public class IndexModel : PageModel
         // First visit? (no query parameters in URL)
         IsInitialSearch = !Request.Query.Keys.Any();
 
-        
-
-        // UI hint only
+        // UI hint only: any city other than Cincinnati is "coming soon"
         ComingSoon = !string.Equals(Query.City, "Cincinnati", StringComparison.OrdinalIgnoreCase);
 
         Neighborhoods = _svc.Neighborhoods();
         AllNames = _svc.GetAllNames();
 
-        // ? IMPORTANT:
-        // Only hit your recommendation service AFTER the user has interacted
-        // with the form at least once.
-        if (!IsInitialSearch)
+        // Only hit the recommendation service:
+        // - after the user has interacted with the form
+        // - AND when the city is Cincinnati (the only one with data right now)
+        if (!IsInitialSearch &&
+            string.Equals(Query.City, "Cincinnati", StringComparison.OrdinalIgnoreCase))
         {
             Results = _svc.Query(Query);
         }
-        // If IsInitialSearch == true, Results stays empty and the page will
-        // show only the search box (no cards, no counts, no pagination).
+        // For non-Cincinnati cities, Results stays empty; the view will just show
+        // the "<City> data coming soon." banner and no cards.
     }
 }

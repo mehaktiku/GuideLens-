@@ -16,11 +16,14 @@ builder.Services.AddSingleton<RecommendationService>();
 // 3) HttpClient for external APIs (Open-Meteo, Nominatim, Wikipedia)
 builder.Services.AddHttpClient();
 
+// 3a) Typed HttpClient for UPCitemdb wrapper
+builder.Services.AddHttpClient<UpcItemDbService>();
+
 // 4) Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// 5) Response caching service (used for /api/recommendations)
+// 5) Response caching service (used for /api/recommendations and others)
 builder.Services.AddResponseCaching();
 builder.Services.AddMemoryCache();
 
@@ -93,7 +96,7 @@ app.MapGet("/api/photo-time-hint", async (
     string? city,
     string? country,
     IHttpClientFactory httpClientFactory,
-    Microsoft.Extensions.Caching.Memory.IMemoryCache cache) =>
+    IMemoryCache cache) =>
 {
     var cacheKey = $"photo-time-hint:{place}:{city}:{country}";
     if (cache.TryGetValue(cacheKey, out var cachedResult))
@@ -190,7 +193,7 @@ app.MapGet("/api/about-place", async (
     string title,
     string? lang,
     IHttpClientFactory httpClientFactory,
-    Microsoft.Extensions.Caching.Memory.IMemoryCache cache) =>
+    IMemoryCache cache) =>
 {
     var cacheKey = $"about-place:{title}:{lang}";
     if (cache.TryGetValue(cacheKey, out var cachedResult))
@@ -242,6 +245,43 @@ app.MapGet("/api/about-place", async (
 
     // Cache for 10 minutes
     cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+
+    return Results.Ok(result);
+});
+
+//
+// 12) UPCITEMDB WRAPPER: /api/upc-lookup
+//     Example:
+//     /api/upc-lookup?upc=012993441012
+//
+app.MapGet("/api/upc-lookup", async (
+    string upc,
+    UpcItemDbService svc,
+    IMemoryCache cache) =>
+{
+    if (string.IsNullOrWhiteSpace(upc))
+    {
+        return Results.BadRequest(new { error = "UPC is required." });
+    }
+
+    var trimmed = upc.Trim();
+
+    // Basic in-memory cache so we don't burn through the free 100 req/day
+    var cacheKey = $"upc:{trimmed}";
+    if (cache.TryGetValue<UpcLookupResult>(cacheKey, out var cached))
+    {
+        return Results.Ok(cached);
+    }
+
+    var result = await svc.LookupAsync(trimmed);
+
+    if (result == null || result.Items == null || result.Items.Count == 0)
+    {
+        return Results.NotFound(new { error = "No product found for this code." });
+    }
+
+    // Cache for 12 hours – tweak as you like
+    cache.Set(cacheKey, result, TimeSpan.FromHours(12));
 
     return Results.Ok(result);
 });

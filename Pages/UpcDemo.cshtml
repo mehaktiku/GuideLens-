@@ -1,0 +1,172 @@
+﻿@page
+@model UpcDemoModel
+
+@{
+    ViewData["Title"] = "UPC Lookup Demo";
+}
+
+<section class="container py-4">
+    <h1 class="mb-3">UPC Lookup Demo</h1>
+    <p class="text-muted">
+        Enter a UPC / barcode value and we’ll call the
+        <code>/api/upc-lookup</code> endpoint (UPCitemdb) and show the product details.
+    </p>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <form id="upcForm" class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label for="upcInput" class="form-label">UPC code</label>
+                    <input type="text"
+                           id="upcInput"
+                           class="form-control"
+                           placeholder="e.g. 012993441012" />
+                </div>
+
+                <div class="col-12 col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Lookup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="upcStatus" class="mb-3"></div>
+
+    <div id="upcResult" class="row g-3 d-none">
+        <div class="col-12 col-md-4">
+            <img id="upcImage"
+                 src=""
+                 alt="Product image"
+                 class="img-fluid rounded shadow-sm border" />
+        </div>
+
+        <div class="col-12 col-md-8">
+            <h4 id="upcTitle" class="mb-2"></h4>
+            <p class="mb-1">
+                <strong>Brand:</strong>
+                <span id="upcBrand"></span>
+            </p>
+            <p class="mb-1">
+                <strong>Category:</strong>
+                <span id="upcCategory"></span>
+            </p>
+            <p class="mb-1">
+                <strong>UPC:</strong>
+                <span id="upcCode"></span>
+            </p>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        (function () {
+            const form = document.getElementById("upcForm");
+            const input = document.getElementById("upcInput");
+            const statusDiv = document.getElementById("upcStatus");
+            const resultRow = document.getElementById("upcResult");
+
+            const titleEl = document.getElementById("upcTitle");
+            const brandEl = document.getElementById("upcBrand");
+            const catEl = document.getElementById("upcCategory");
+            const codeEl = document.getElementById("upcCode");
+            const imgEl = document.getElementById("upcImage");
+
+            function setStatus(message, type) {
+                if (!statusDiv) return;
+
+                statusDiv.className = "";
+                statusDiv.textContent = "";
+
+                if (!message) {
+                    return;
+                }
+
+                const alertClass = type === "error"
+                    ? "alert alert-danger"
+                    : type === "info"
+                        ? "alert alert-info"
+                        : "alert alert-success";
+
+                statusDiv.className = alertClass;
+                statusDiv.textContent = message;
+            }
+
+            async function lookup(upc) {
+                const trimmed = (upc || "").trim();
+                if (!trimmed) {
+                    setStatus("Please enter a UPC code.", "error");
+                    resultRow.classList.add("d-none");
+                    return;
+                }
+
+                setStatus("Looking up product…", "info");
+                resultRow.classList.add("d-none");
+
+                try {
+                    const url = `/api/upc-lookup?upc=${encodeURIComponent(trimmed)}`;
+                    const resp = await fetch(url);
+
+                    if (resp.status === 404) {
+                        setStatus("No product found for this code.", "error");
+                        return;
+                    }
+
+                    if (!resp.ok) {
+                        setStatus(`Lookup failed (HTTP ${resp.status}).`, "error");
+                        return;
+                    }
+
+                    const data = await resp.json();
+                    if (!data || !data.items || !data.items.length) {
+                        setStatus("No product data returned.", "error");
+                        return;
+                    }
+
+                    const item = data.items[0];
+
+                    titleEl.textContent = item.title || "(No title)";
+                    brandEl.textContent = item.brand || "—";
+                    catEl.textContent = item.category || "—";
+                    codeEl.textContent = item.upc || trimmed;
+
+                    const imgUrl = item.images && item.images.length ? item.images[0] : "";
+                    if (imgUrl) {
+                        imgEl.src = imgUrl;
+                        imgEl.alt = item.title || "Product image";
+                        imgEl.classList.remove("d-none");
+                    } else {
+                        imgEl.src = "";
+                        imgEl.alt = "No image available";
+                        imgEl.classList.add("d-none");
+                    }
+
+                    resultRow.classList.remove("d-none");
+                    setStatus("Product found.", "success");
+                } catch (err) {
+                    console.error(err);
+                    setStatus("Unexpected error while looking up the product.", "error");
+                    resultRow.classList.add("d-none");
+                }
+            }
+
+            // Handle manual form submit
+            if (form) {
+                form.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    lookup(input.value);
+                });
+            }
+
+            // NEW: support /UpcDemo?upc=XXXX  → prefill + auto lookup
+            const params = new URLSearchParams(window.location.search);
+            const initialUpc = params.get("upc");
+            if (initialUpc && input) {
+                input.value = initialUpc;
+                lookup(initialUpc);
+            }
+        })();
+    </script>
+}

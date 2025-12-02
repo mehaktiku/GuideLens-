@@ -52,6 +52,10 @@
                         </li>
 
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/UpcDemo">UPC Demo</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link @(ViewContext.ActionDescriptor.DisplayName?.Contains("/Cities") == true ? "active" : "")"
                                asp-page="/Cities"
                                aria-current="@(ViewContext.ActionDescriptor.DisplayName?.Contains("/Cities") == true ? "page" : null)">
