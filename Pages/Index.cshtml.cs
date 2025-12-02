@@ -33,9 +33,7 @@ public class IndexModel : PageModel
         // First visit? (no query parameters in URL)
         IsInitialSearch = !Request.Query.Keys.Any();
 
-        // Default city so dropdown has a value
-        if (string.IsNullOrWhiteSpace(Query.City))
-            Query.City = "Cincinnati";
+        
 
         // UI hint only
         ComingSoon = !string.Equals(Query.City, "Cincinnati", StringComparison.OrdinalIgnoreCase);
