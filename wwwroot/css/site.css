@@ -135,6 +135,7 @@ textarea:focus {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    height: min(52vh, 520px);
 }
 
     .gl-hero-full::before {
@@ -368,6 +369,18 @@ button.btn-primary {
         color: var(--gl-primary);
         font-weight: 900;
     }
+}
+
+
+.gl-brand-wordmark {
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: .2px;
+    line-height: 1;
+    font-family: "Cantora One", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    font-weight: 400;
+    letter-spacing: .2px;
+}
 
         .gl-footer a:hover,
         .footer a:hover {
